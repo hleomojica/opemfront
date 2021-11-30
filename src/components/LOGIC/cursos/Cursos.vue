@@ -10,6 +10,7 @@ import Loader from "@/components/Loader/Loader";
 export default {
   components: { Loader, CursosTable },
   data() {
+    //lo que agregue
     return {};
   },
   computed: {},

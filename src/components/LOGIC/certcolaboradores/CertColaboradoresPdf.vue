@@ -1,59 +1,73 @@
 <template>
   <div>
-    <div class="page">
-      <div class="cert-content">
-        <div class="cert-id">
-          <span>Certificado</span>
-          <span>ID <span class="id-text">ID AAR-EC-0006/050 </span></span>
-        </div>
-        <div class="cert-details">
-          <h3>{{ details.colaborador.nombres }}</h3>
-          <h3>{{ details.colaborador.apellidos }}</h3>
-          <span>CC {{details.colaborador.cedula}}</span>
-        </div>
-        <div class="cert-curso">
-          <span>Asistió y aprobó satisfactoriamente el curso</span>
-          <h3>{{details.curso.nombre}}</h3>
-        </div>
-        <div class="cert-dates">
-          <h5 class="intensity">Realizado con una intensidad de 20 horas</h5>
-          <h5 class="dat">Fecha de expedición: 09 de Septiembre de 2021</h5>
-        </div>
-        <div class="cert-sign">
-          <img src="../../../assets/certificado/firma.png" class="img-sign" />
-          <h5>JUAN JOSÉ SOLANO MEZA</h5>
-          <h6>Director de Formación Empresarial</h6>
-          <span>
-            Emitido por
-            <span>OPTIMIZACIÓN EMPRESARIAL S.A.S</span>
-          </span>
-          <h5 class="license">Licencia en SST 00-10536</h5>
-          <span>Bucaramanga - Colombia</span>
-        </div>
-      </div>
+    <div>
+      <b-alert show variant="success">
+        <h4 class="alert-heading">
+          Felicitaciones {{ dataItem.colaboradore.nombres_col }} !
+        </h4>
+        <p>
+          Aprobo satisfactoriamente el curso de
+          {{ dataItem.certificacione.curso.nombre_cur }}, a continuacion esta la
+          vista previa del certificado, esperamos seguir trabajando juntos para
+          ser mejores.
+        </p>
+        <hr />
+        <p class="mb-0">
+          <b-button pill variant="primary" @click="download"
+            >Descargar Certificado!</b-button
+          >
+        </p>
+      </b-alert>
     </div>
+    <vue-html2pdf
+      :show-layout="false"
+      :float-layout="true"
+      :enable-download="false"
+      :preview-modal="true"
+      filename="certificacion"
+      :pdf-quality="2"
+      :manual-pagination="true"
+      pdf-format="a4"
+      pdf-orientation="portrait"
+      ref="html2Pdf"
+    >
+      <section slot="pdf-content">
+        <CertColaboradoresTemplate :certificacion="this.dataItem" />
+      </section>
+    </vue-html2pdf>
+
+    <CertColaboradoresTemplate :certificacion="this.dataItem" />
   </div>
 </template>
 <script>
+import { mapActions, mapState } from "vuex";
 import Loader from "@/components/Loader/Loader";
+import CertColaboradoresTemplate from "./CertColaboradoresTemplate.vue";
 import QrcodeVue from "qrcode.vue";
+import VueHtml2pdf from "vue-html2pdf";
 export default {
-  components: { Loader, QrcodeVue },
+  components: { Loader, QrcodeVue, VueHtml2pdf, CertColaboradoresTemplate },
   name: "CertCoalboradoresPdf",
-  props: {
-    details: {
-      type: Object,
-    },
-  },
   data() {
     return {};
   },
-  methods: {},
-  mounted() {
-    // if(Object.keys(this.details).length == 0 ){
-    //   }
+  methods: {
+    ...mapActions({
+      getData: "certcolaboradores/getDataById",
+    }),
+    download() {
+      this.$refs.html2Pdf.generatePdf();
+    },
+  },
+  computed: {
+    ...mapState({
+      dataItem: (state) => state.certcolaboradores.dataItem,
+      loading: (state) => state.certcolaboradores.loading,
+    }),
+  },
+  async mounted() {
+    const id = this.$route.params.id;
+    await this.getData(id);
   },
 };
 </script>
-
-<style  src="./Certificado.scss" lang="scss"  />

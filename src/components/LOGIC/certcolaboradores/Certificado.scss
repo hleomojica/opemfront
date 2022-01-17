@@ -12,7 +12,7 @@ body {
 
 .page {
   width: 210mm;
-  min-height: 297mm;
+  min-height: 295mm;
   padding: 20mm;
   //margin: 10mm auto;
   border: 1px #d3d3d3 solid;
@@ -101,6 +101,10 @@ body {
           font-weight: bold;
         }
       }
+    }
+
+    .cert-qr {
+      float: right;
     }
   }
 }

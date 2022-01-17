@@ -1,18 +1,18 @@
 <template>
   <div>
     <b-button-group class="mb-2">
-      <router-link
+      <b-button
         :to="{
           name: 'colaboradoresnew',
           params: {
             father: 'Colaboradores',
           },
         }"
+        variant="outline-primary"
       >
-        <b-button variant="outline-primary">
-          <b-icon icon="plus-circle-fill"></b-icon> Nueva
-        </b-button>
-      </router-link>
+        <b-icon icon="plus-circle-fill"></b-icon> Nueva
+      </b-button>
+
       <b-button v-b-toggle.collapse-1 variant="outline-primary">
         <b-icon icon="search"></b-icon> Filtro
       </b-button>
@@ -235,7 +235,7 @@ export default {
       this.page = value;
       this.retrieveTutorials();
     },
-    filter() {
+    async filter() {
       const params = this.getRequestParams(
         1,
         10,
@@ -243,7 +243,9 @@ export default {
         this.idemp,
         this.cedula
       );
-      this.getData(params);
+      await this.getData(params);
+      this.page = this.dataTable.currenPage;
+      this.count = this.dataTable.totalItems;
     },
     existCuentAcceso(row) {
       if (row.item.cuentaacceso) {

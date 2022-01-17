@@ -18,7 +18,6 @@ import layoutMixin from './mixins/layout';
 import {
   AuthMixin
 } from './mixins/auth'
-import Widget from './components/Widget/Widget';
 import Vuelidate from 'vuelidate'
 import {
   ClientTable
@@ -44,7 +43,6 @@ Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 Vue.use(VueTouch);
 Vue.use(Trend);
-Vue.component('Widget', Widget);
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyB7OXmzfQYua_1LEhRdqsoYzyJOPh9hGLg',

@@ -32,13 +32,6 @@ import RolesNew from "@/components/LOGIC/roles/RolesNew";
 import CertColaboradoresPdf from "@/components/LOGIC/certcolaboradores/CertColaboradoresPdf";
 import CertColaboradorConsulta from "@/components/LOGIC/certcolaboradores/CertColaboradorConsulta";
 
-// -- Template Resources
-import GoogleMapPage from "@/pages/Maps/Google";
-import ChartsPage from "@/pages/Charts/Charts";
-import NotificationsPage from "@/pages/Notifications/Notifications";
-
-import mockData from "@/pages/Dashboard/mock.js";
-
 Vue.use(Router);
 
 export default new Router({
@@ -75,22 +68,7 @@ export default new Router({
           path: "dashboard",
           name: "Dashboard",
           component: Dashboard,
-        },    
-        {
-          path: "notifications",
-          name: "NotificationsPage",
-          component: NotificationsPage,
-        },
-        {
-          path: "components/charts",
-          name: "ChartsPage",
-          component: ChartsPage,
-        },
-        {
-          path: "components/maps",
-          name: "GoogleMapPage",
-          component: GoogleMapPage,
-        },
+        }  
       ],
     },
     {
@@ -181,9 +159,10 @@ export default new Router({
           component: CertColaboradoresNew,
         },
         {
-          path: "certcolaboradores/pdf",
+          path: "certcolaboradores/Certificado",
+          name:'certcolaboradorespdf',
           component: CertColaboradoresPdf,
-          props: mockData.dataPdf
+          
 
         },
         {

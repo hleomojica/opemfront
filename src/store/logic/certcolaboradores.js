@@ -4,6 +4,7 @@ export default {
   namespaced: true,
   state: {
     dataTable: [],
+    dataItem: [],
     loading: false,
     modalOpen: false,
     dataForm: {},
@@ -14,6 +15,10 @@ export default {
     setData(state, payload) {
       state.dataTable = [];
       state.dataTable = payload;
+    },
+    setDataItem(state, payload) {
+      state.dataItem = [];
+      state.dataItem = payload;
     },
     getData(state, payload) {
       state.dataTable = [];
@@ -90,6 +95,20 @@ export default {
         const response = await axios.get(`/certcol/GetByCedula${param}`);
 
         commit("setData", response.data);
+        commit("hideLoader");
+      } catch (e) {
+        this._vm.$toasted.show("Error: " + e, {
+          type: "error",
+        });
+      }
+    },
+    async getDataById({
+      commit
+    }, payload) {
+      try {
+        commit("showLoader");
+        const response = await axios.get(`/certcol/GetById/${payload}`);
+        commit("setDataItem", response.data);
         commit("hideLoader");
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {

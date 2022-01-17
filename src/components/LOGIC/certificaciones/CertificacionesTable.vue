@@ -89,10 +89,9 @@
 import { mapState, mapActions, mapMutations } from "vuex";
 import Loader from "@/components/Loader/Loader";
 import dataFormatter from "@/use/dataFormatter.js";
-import FilterForm from "@/components/Filter/Filter";
 
 export default {
-  components: { FilterForm, Loader },
+  components: { Loader },
   data() {
     return {
       config: [],

@@ -1,59 +1,60 @@
 <template>
   <div class="auth-page">
     <b-container>
-     
       <h5 class="auth-logo">
-         <img src="../../assets/logoopem.png"/>
+        <img src="../../assets/logoopem.png" />
       </h5>
-      <Widget
-        class="widget-auth mx-auto"
-        title="<h3 class='mt-0'>Ingresa al portal</h3>"
-        customHeader
-      >
-        <p class="widget-auth-info">Ingrese el numero de cedula.</p>
-        <form class="mt" @submit.prevent="login">
-          <b-alert class="alert-sm" variant="danger" :show="!!errorMessage">
-            {{ errorMessage }}
-          </b-alert>
-          <div class="form-group">
-            <input
-              class="form-control no-border"
-              ref="username"
-              required
-              type="text"
-              name="username"
-              v-model="username"
-              placeholder="Usuario"
-            />
-          </div>
-          <div class="form-group">
-            <input
-              class="form-control no-border"
-              ref="password"
-              required
-              type="password"
-              v-model="password"
-              name="password"
-              placeholder="Contraseña"
-            />
-            <router-link class="d-block text-right" to="login"
-              >Olvide mi Contraseña</router-link
-            >
-          </div>
-
-          <b-button
-            type="submit"
-            size="sm"
-            class="auth-btn mb-3"
-            variant="inverse"
-            >Entrar</b-button
+      <b-row class="justify-content-md-center">
+        <b-col lg="5">
+          <b-card
+            title="Inicio de sesio"
+            sub-title="Ingrese el numero de cedula."
           >
-        </form>
-        <p class="widget-auth-info">No puedes Ingresar?</p>
-        <router-link class="d-block text-center" to="login"
-          >Registrarse</router-link
-        >
-      </Widget>
+            <form class="mt" @submit.prevent="login">
+              <b-alert class="alert-sm" variant="danger" :show="!!errorMessage">
+                {{ errorMessage }}
+              </b-alert>
+              <div class="form-group">
+                <input
+                  class="form-control no-border"
+                  ref="username"
+                  required
+                  type="text"
+                  name="username"
+                  v-model="username"
+                  placeholder="Usuario"
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  class="form-control no-border"
+                  ref="password"
+                  required
+                  type="password"
+                  v-model="password"
+                  name="password"
+                  placeholder="Contraseña"
+                />
+                <router-link class="d-block text-right" to="login"
+                  >Olvide mi Contraseña</router-link
+                >
+              </div>
+
+              <b-button
+                type="submit"
+                size="sm"
+                class="auth-btn mb-3"
+                variant="inverse"
+                >Entrar</b-button
+              >
+            </form>
+            <p>No puedes Ingresar?</p>
+            <router-link class="d-block text-center" to="login"
+              >Registrarse</router-link
+            >
+          </b-card>
+        </b-col>
+      </b-row>
     </b-container>
     <footer class="auth-footer">
       2021 &copy; Portal de ceritificaciones Opem S.A Realizado por
@@ -63,13 +64,12 @@
 </template>
 
 <script>
-import Widget from "@/components/Widget/Widget";
 import { mapState, mapActions } from "vuex";
 import config from "../../config";
 
 export default {
   name: "LoginPage",
-  components: { Widget },
+  components: {},
   data() {
     return {
       username: null,

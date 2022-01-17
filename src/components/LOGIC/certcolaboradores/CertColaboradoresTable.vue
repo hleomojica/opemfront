@@ -62,9 +62,17 @@
         <b-button
           pill
           size="sm"
+          :hidden="row.item.estado_ceco == 0"
           class="mr-2"
           variant="warning"
-          @click="generate(row)"
+          :to="{
+            name: 'certcolaboradorespdf',
+            params: {
+              father: 'CertColaboradores',
+              id:row.item.id_ceco
+            },
+          }"
+         
         >
           <b-icon icon="download" aria-hidden="true"></b-icon>
         </b-button>
@@ -100,24 +108,7 @@
         >Eliminar</b-button
       >
     </b-modal>
-    <!-- pdf -->
 
-    <vue-html2pdf
-      :show-layout="false"
-      :float-layout="true"
-      :enable-download="true"
-      :preview-modal="true"
-      filename="certificacion"
-      :pdf-quality="2"
-      :manual-pagination="true"
-      pdf-format="a4"
-      pdf-orientation="portrait"
-      ref="html2Pdf"
-    >
-      <section slot="pdf-content">
-        <PdfCertificado :details="this.certificado" />
-      </section>
-    </vue-html2pdf>
   </div>
 </template>
 
@@ -125,13 +116,12 @@
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
 import Loader from "@/components/Loader/Loader";
-import PdfCertificado from "@/components/LOGIC/certcolaboradores/CertColaboradoresPdf";
 import { validationMixin } from "vuelidate";
-import VueHtml2pdf from "vue-html2pdf";
+
 
 export default {
   mixins: [validationMixin],
-  components: { Loader, VueHtml2pdf, PdfCertificado },
+  components: { Loader },
   name: "CertColaboradoresTable",
   data() {
     return {
@@ -160,23 +150,11 @@ export default {
       infoModal: {
         id: "info-modal",
         empresa: "",
-      },
-      certificado: {
-        curso: {
-          nombre: "",
-          duracion: "",
-          fechainicio: "",
-        },
-        colaborador: {
-          nombres: "",
-          cedula: "",
-        },
-      },
+      },   
       page: 1,
       count: 0,
       pageSize: 10,
-      valueqr: "http://localhost:3001",
-      sizeqr: 140,
+    
     };
   },
   computed: {
@@ -231,22 +209,6 @@ export default {
     handlePageChange(value) {
       this.page = value;
       this.retrieveParam();
-    },
-    generate(row) {
-      const items = row.item;
-      console.log(items);
-      this.certificado.curso.nombre = items.certificacione.curso.nombre_cur;
-      this.certificado.colaborador.nombres = items.colaboradore.nombres_col;
-      this.certificado.colaborador.apellidos = items.colaboradore.apellidos_col;
-      this.certificado.colaborador.cedula =
-        items.colaboradore.numerodocumento_col;
-      this.certificado.curso.duracion = items.certificacione.horas_cer;
-      this.certificado.curso.fechainicio = items.certificacione.fechainicio_cer;
-      this.valueqr = `${this.valueqr}?idceco=${items.idcer_ceco}`;
-      this.generateReport();
-    },
-    generateReport() {
-      this.$refs.html2Pdf.generatePdf();
     },
     changeEstado(row, check) {
       console.log(row.item, "  ---------- ", check);

@@ -35,10 +35,7 @@
       </b-form>
     </b-nav>
     <a class="navbarBrand d-md-none">
-      <!-- <i class="fa fa-circle text-danger" />      
-      &nbsp; OpenApp &nbsp;
-      <i class="fa fa-circle text-primary" /> -->
-      <img src="../../assets/logoopem.png" style="width: 120px;" alt="">
+      <img src="../../assets/logoopem.png" style="width: 120px" alt="" />
     </a>
     <b-nav class="ml-auto">
       <b-nav-item-dropdown
@@ -74,6 +71,7 @@
         <b-dropdown-item
           ><i class="fi flaticon-person px-3 mr-3" /> Mi Cuenta</b-dropdown-item
         >
+        <!-- 
         <b-dropdown-divider />
         
         <b-dropdown-item v-b-tooltip.hover title="No disponible aun"
@@ -85,7 +83,8 @@
             style="padding: 6px 9px"
             >0</b-badge
           >
-        </b-dropdown-item>
+        </b-dropdown-item> 
+        -->
         <b-dropdown-divider />
         <b-dropdown-item-button @click="logout">
           <i class="fi flaticon-power-1 px-3 mr-3" /> Cerrar Sesion
@@ -114,11 +113,12 @@ export default {
     }),
   },
   methods: {
-    ...mapActions("layout", [
-      "toggleSidebar",
-      "switchSidebar",
-      "changeSidebarActive",
-    ]),
+    ...mapActions({
+      toggleSidebar: "layout/toggleSidebar",
+      switchSidebar: "layout/switchSidebar",
+      changeSidebarActive: "layout/changeSidebarActive",
+      logoutUser: "auth/logoutUser",
+    }),
     switchSidebarMethod() {
       if (!this.sidebarClose) {
         this.switchSidebar(true);
@@ -142,8 +142,7 @@ export default {
       }
     },
     logout() {
-      window.localStorage.setItem("authenticated", false);
-      this.$router.push("/login");
+      this.logoutUser();
     },
     refresh() {
       this.$router.push("/");

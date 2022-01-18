@@ -119,7 +119,7 @@ export default {
     },
     rowClicked(val, row) {
       console.log(val, row);
-      //this.$router.push(`/admin/cursos/${row.id}/edit`)
+      
     },
   },
 

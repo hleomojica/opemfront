@@ -2,6 +2,7 @@
   <div>
     <b-button-group class="mb-2">
       <b-button
+        v-if="this.origen == 'colaboradores'"
         :to="{
           name: 'colaboradoresnew',
           params: {
@@ -12,6 +13,23 @@
       >
         <b-icon icon="plus-circle-fill"></b-icon> Nueva
       </b-button>
+
+      <xlsx-workbook>
+        <xlsx-sheet
+          :collection="dataTable.items"
+          key="sheet"
+          sheet-name="sheetname"
+        />
+        <xlsx-download>
+          <b-button variant="outline-primary">
+            <b-icon icon="download"></b-icon> Exportar
+          </b-button>
+        </xlsx-download>
+      </xlsx-workbook>
+
+      <!-- <b-button variant="outline-primary">
+        <b-icon icon="download"></b-icon> Exportar
+      </b-button> -->
 
       <b-button v-b-toggle.collapse-1 variant="outline-primary">
         <b-icon icon="search"></b-icon> Filtro
@@ -68,12 +86,14 @@
     <!-- tabla -->
     <b-table
       v-else
+      ref="tablecol"
       striped
       responsive
       hover
       light
       :items="dataTable.items"
       :fields="fields"
+      @row-clicked="rowClicked"
     >
       <template #cell(edit)="row">
         <router-link
@@ -144,10 +164,18 @@
 import { mapActions, mapState, mapMutations } from "vuex";
 import Loader from "@/components/Loader/Loader";
 import { validationMixin } from "vuelidate";
+import XlsxWorkbook from "vue-xlsx/dist/components/XlsxWorkbook";
+import XlsxSheet from "vue-xlsx/dist/components/XlsxSheet";
+import XlsxDownload from "vue-xlsx/dist/components/XlsxDownload";
 
 export default {
   mixins: [validationMixin],
-  components: { Loader },
+  components: { Loader, XlsxWorkbook, XlsxSheet, XlsxDownload },
+  props: {
+    origen: {
+      type: String,
+    },
+  },
   data() {
     return {
       fields: [
@@ -180,6 +208,7 @@ export default {
       dataTable: (state) => state.colaboradores.dataTable,
       loading: (state) => state.colaboradores.loading,
       dataEmpresa: (state) => state.empresas.dataList,
+      dataColaborador: (state) => state.colaboradores.dataColaborador,
     }),
   },
   methods: {
@@ -254,12 +283,25 @@ export default {
         return "light";
       }
     },
+    rowClicked(val, row) {
+      if (this.origen !== "colaboradores") {
+        this.dataTable.items[row]["_rowVariant"] = "success";
+        this.$refs.tablecol.refresh();
+        this.$emit("load", val);
+      }
+    },
   },
   async beforeMount() {
     await this.getData({ page: 0, size: 10 });
     await this.getDataEmpresa();
     this.page = this.dataTable.currenPage;
     this.count = this.dataTable.totalItems;
+    if (this.origen !== "colaboradores") {
+      this.fields = this.fields.filter(
+        (fil) =>
+          fil.key !== "edit" && fil.key !== "delete" && fil.key !== "singup"
+      );
+    }
   },
 };
 </script>

@@ -81,7 +81,6 @@ export default {
       // Helper vuex with spread operator to combine (modules vuex)
       isFetching: (state) => state.auth.isFetching,
       errorMessage: (state) => state.auth.errorMessage,
-      dataMenu: (state) => state.modulos.dataMenu,
     }),
   },
   methods: {
@@ -89,8 +88,7 @@ export default {
     ...mapActions({
       loginUser: "auth/loginUser",
       receiveToken: "auth/receiveToken",
-      receiveLogin: "auth/receiveLogin",
-      getMenu: "modulos/getMenu",
+      receiveLogin: "auth/receiveLogin"
     }),
     async login() {
       this.username = this.$refs.username.value;
@@ -102,19 +100,6 @@ export default {
           username: this.username,
           password: this.password,
         });
-
-        const dataUserLS = localStorage.getItem("datauser");
-        if (dataUserLS) {
-          const dataUser = JSON.parse(dataUserLS);
-          const idrol = dataUser.idroles_cue;
-          await this.getMenu(idrol);
-
-          const encrMenu = this.$CryptoJS.AES.encrypt(
-            JSON.stringify(this.dataMenu),
-            "staencripmaschimba"
-          ).toString();
-          localStorage.setItem("menu", encrMenu);
-        }
       }
     },
   },

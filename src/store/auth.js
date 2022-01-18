@@ -3,13 +3,15 @@
 import axios from "axios"
 import jwt from "jsonwebtoken"
 import router from '../Routes'
+import CryptoJS from 'crypto-js'
 
 export default {
     namespaced: true,
     state: {
         isFetching: false,
         errorMessage: '',
-        currentUser: null
+        currentUser: null,
+        menu: null
     },
     mutations: {
         LOGIN_FAILURE(state, payload) {
@@ -22,12 +24,15 @@ export default {
             state.errorMessage = ''
             state.currentUser = user || null
         },
+        MENU_ROL(state, menu) {
+            state.menu = menu || null
+        },
         LOGIN_REQUEST(state) {
             state.isFetching = true
         },
     },
     actions: {
-        async findMe({dispatch}) {
+        async findMe({ dispatch }) {
             try {
                 const response = await axios.get('/auth/me')
                 return response.data
@@ -35,12 +40,11 @@ export default {
                 dispatch('logoutUser')
             }
         },
-        async doInit({commit},res) {
+        async doInit({ commit }, res) {
             try {
                 let currentUser = null;
                 let token = localStorage.getItem('token');
                 if (token) {
-                   // console.log(res.data.dataUser);
                     currentUser = res.data.dataUser; // use dispatch to call another action                     
                 }
                 commit('LOGIN_SUCCESS', currentUser)
@@ -48,19 +52,25 @@ export default {
                 commit('LOGIN_FAILURE', e)
             }
         },
-        async loginUser({dispatch}, payload) {
-            let url= "/cuentaacceso/auth";
+        async loginUser({ dispatch }, payload) {
+            let url = "/cuentaacceso/auth";
+
             dispatch('requestLogin') // Setting the loading flag
             if (payload.password && payload.username) {
                 try {
                     const res = await axios.post(url, payload)
-                    const token = res.data                    
+                    const token = res.data
+                    dispatch('receiveToken', token)
 
-                    dispatch('receiveToken', token) // Call functions
-                    dispatch('doInit',res)
+                    const resmod = await axios.get(`/modulos?idrol=${token.dataUser.idroles_cue}`)
+                    const menu = resmod.data
+
+                    dispatch('receiveMenu', menu)                    
+                    dispatch('doInit', res)
+
                 } catch (e) {
                     this._vm.$toasted.show('Error: ' + e, {
-                        type : 'error'
+                        type: 'error'
                     })
                     dispatch('loginError', e.response.data)
                 }
@@ -68,32 +78,38 @@ export default {
                 dispatch('loginError', 'Something was wrong. Try again')
             }
         },
-        receiveToken({commit}, data) {
+        receiveMenu({ commit }, data) {
 
-            let token =data.accesToken
+            const encrMenu = CryptoJS.AES.encrypt(JSON.stringify(data),"staencripmaschimba").toString();
+            localStorage.setItem("menu", encrMenu);
+            commit('MENU_ROL')
+            router.push('/')
+        },
+        receiveToken({ commit }, data) {
+
+            let token = data.accesToken
             let user = jwt.decode(token)
             localStorage.setItem('token', token)
             localStorage.setItem('user', JSON.stringify(user))
             localStorage.setItem('datauser', JSON.stringify(data.dataUser))
-            axios.defaults.headers.common['Authorization'] = "Bearer " + token;
-            
-            commit('LOGIN_SUCCESS')
-            router.push('/')
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            commit('LOGIN_SUCCESS')            
         },
         logoutUser() {
             localStorage.removeItem('token')
             localStorage.removeItem('user')
             localStorage.removeItem("menu");
+            localStorage.removeItem("datauser");
             axios.defaults.headers.common['Authorization'] = ""
             router.push('/login')
         },
-        loginError({commit}, payload) {
+        loginError({ commit }, payload) {
             commit('LOGIN_FAILURE', payload)
         },
-        requestLogin({commit}) {
+        requestLogin({ commit }) {
             commit('LOGIN_REQUEST')
         },
-        receiveLogin({commit}) {
+        receiveLogin({ commit }) {
             commit('LOGIN_SUCCESS');
         },
     },

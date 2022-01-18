@@ -230,9 +230,8 @@ export default {
       }
     },
   },
-  beforeMount() {
-    const modeForm = this.$route.path.split("/").pop();
-    this.setComponent(modeForm);
+  beforeMount() {    
+    this.setComponent(this.$route.params.mode);
   },
 };
 </script>

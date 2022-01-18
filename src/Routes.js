@@ -78,7 +78,8 @@ export default new Router({
         name: "Dashboard"
       },
       component: Layout,
-      children: [{
+      children: [
+        {
           path: "cursos",
           name: "Cursos",
           component: Cursos,
@@ -119,13 +120,10 @@ export default new Router({
           component: Empresas,
         },
         {
-          path: 'empresas/:id/edit',
+          path: 'empresas/nuevo',
+          name:'empresasnew',
           component: EmpresasNew,
-        },
-        {
-          path: "empresas/new",
-          component: EmpresasNew,
-        },
+        },       
         {
           path: 'empresas/:id',
           beforeEnter(from, to, next) {
@@ -162,8 +160,6 @@ export default new Router({
           path: "certcolaboradores/Certificado",
           name:'certcolaboradorespdf',
           component: CertColaboradoresPdf,
-          
-
         },
         {
           path: "configuraciones/paises",

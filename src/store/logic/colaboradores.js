@@ -9,6 +9,7 @@ export default {
     modalOpen: false,
     dataForm: {},
     deleteId: null,
+    dataColaborador: []
   },
   //-- Will modify the state
   mutations: {
@@ -36,6 +37,12 @@ export default {
     setDeleteId(state, payload) {
       state.deleteId = payload;
     },
+    setDataColaborador(state, payload) {
+      state.dataColaborador.push(payload)
+    },
+    removeDataColaborador(state, payload) {
+      state.dataColaborador = state.dataColaborador.filter(col => col.id_col !== payload)
+    }
   },
   getters: {
     getDataNow(state) {
@@ -57,7 +64,7 @@ export default {
       try {
         commit("showLoader");
         const response = await axios.get(`/colaboradores?page=${payload.page}&size=${payload.size}${nombre}${idemp}${cedula}`);
-        commit("setData", response.data);        
+        commit("setData", response.data);
         commit("hideLoader");
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {

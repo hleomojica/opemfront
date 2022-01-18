@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken"
 import axios from "axios"
 
 export function isAuthenticated() {
+    
 
     const token = localStorage.getItem('token');
     if (!token) return;

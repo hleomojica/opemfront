@@ -1,18 +1,18 @@
  <template>
   <div>
     <b-button-group class="mb-2">
-      <router-link
+      <b-button
         :to="{
           name: 'certificacionesnew',
           params: {
             father: 'Certificaciones',
           },
         }"
+        variant="outline-primary"
       >
-        <b-button variant="outline-primary">
-          <b-icon icon="plus-circle-fill"></b-icon> Nuevo
-        </b-button>
-      </router-link>
+        <b-icon icon="plus-circle-fill"></b-icon> Nuevo
+      </b-button>
+
       <b-button variant="outline-primary">
         <b-icon icon="search"></b-icon> Filtro
       </b-button>
@@ -170,7 +170,7 @@ export default {
     }),
     getRequestParams(page, perPage) {
       let params = {};
-      if (page) {     
+      if (page) {
         params["page"] = page - 1;
       }
       if (perPage) {

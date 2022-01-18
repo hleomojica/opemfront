@@ -47,15 +47,20 @@
           </b-button>
         </router-link>
       </template>
-      <template #cell(delete)="row">
-        <b-button
-          pill
-          variant="danger"
-          size="sm"
-          @click="del(row.item, row.index, $event.target)"
-        >
-          <b-icon icon="trash-fill" aria-hidden="true"></b-icon>
-        </b-button>
+      <template #cell(estado)="row">
+        <b-button-group pill>
+          <b-dropdown :variant="estadoBtn(row)" :text="estadoText(row)">
+            <b-dropdown-item @click="changeEstado(row, 0)" variant="warning"
+              >En Curso</b-dropdown-item
+            >
+            <b-dropdown-item @click="changeEstado(row, 1)" variant="success"
+              >Finalizado</b-dropdown-item
+            >
+            <b-dropdown-item @click="changeEstado(row, 2)" variant="secundary"
+              >Cancelado</b-dropdown-item
+            >
+          </b-dropdown>
+        </b-button-group>
       </template>
     </b-table>
 
@@ -68,20 +73,6 @@
       class="mt-4"
       @change="handlePageChange"
     ></b-pagination>
-
-    <b-modal :id="infoModal.id" title="Cuidado !" hide-footer>
-      <div class="d-block text-center">
-        Esta seguro de eliminar el certificado
-        <strong>{{ infoModal.fechainicio }}</strong>
-      </div>
-      <b-button
-        class="mt-3"
-        variant="outline-danger"
-        block
-        @click="confirmDelte($event.target)"
-        >Eliminar</b-button
-      >
-    </b-modal>
   </div>
 </template>
 
@@ -98,19 +89,15 @@ export default {
       fields: [
         { key: "curso.nombre_cur", label: "Curso" },
         { key: "cohorte_cer", label: "Cohorte" },
-        { key: "fechainicio_cer", label: "Fechainicio" },
-        { key: "fechafin_cer", label: "Fechafin" },
+        { key: "fechainicio_cer", label: "Fecha Expedición" },
+        { key: "fechafin_cer", label: "Fecha Vencimiento" },
         { key: "horas_cer", label: "Horas" },
+        { key: "estado", label: "Estado" },
         { key: "edit", label: "" },
-        { key: "delete", label: "" },
       ],
       page: 1,
       count: 0,
       perPage: 10,
-      infoModal: {
-        id: "info-modal",
-        curso: "",
-      },
     };
   },
   computed: {
@@ -118,13 +105,30 @@ export default {
       loading: (state) => state.certificaciones.loading,
       dataTable: (state) => state.certificaciones.dataTable,
       modalOpen: (state) => state.certificaciones.modalOpen,
-      deleteId: (state) => state.certificaciones.deleteId,
     }),
     dataFormatter() {
       return dataFormatter;
     },
   },
   methods: {
+    estadoBtn(row) {
+      if (row.item.estado_cer == 1) {
+        return "success";
+      } else if (row.item.estado_cer == 0) {
+        return "warning";
+      } else {
+        return "danger";
+      }
+    },
+    estadoText(row) {
+      if (row.item.estado_cer == 1) {
+        return "Finalizado";
+      } else if (row.item.estado_cer == 0) {
+        return "En Curso";
+      } else {
+        return "Cancelado";
+      }
+    },
     info(item, mode) {
       this.$router.push(`${this.$route.fullPath}/${item.id_cer}/${mode}`);
     },
@@ -159,26 +163,14 @@ export default {
       getData: "certificaciones/getData",
       getFilteredData: "certificaciones/getFilteredData",
       deleteItem: "certificaciones/deleteItem",
+      updateEstado: "certificaciones/editEstado",
     }),
     ...mapMutations({
       setDeleteId: "certificaciones/setDeleteId",
     }),
-    del(item, index, button) {
-      this.infoModal.fechainicio = item.fechainicio_cer;
-      this.setDeleteId(item.id_cer);
-      this.$root.$emit("bv::show::modal", this.infoModal.id, button);
-    },
-    confirmDelte(btn) {
-      this.$root.$emit("bv::hide::modal", this.infoModal.id, btn);
-      this.deleteItem();
-      //TODO:para revisar
-      this.getData({ page: 0, size: 10 });
-      this.page = this.dataTable.currenPage;
-      this.count = this.dataTable.totalItems;
-    },
     getRequestParams(page, perPage) {
       let params = {};
-      if (page) {
+      if (page) {     
         params["page"] = page - 1;
       }
       if (perPage) {
@@ -186,18 +178,26 @@ export default {
       }
       return params;
     },
-    retrieveTutorials() {
-      const params = this.getRequestParams(this.page, this.perPage);
-      this.getData(params);
+    async retrieveTutorials() {
+      const params = this.getRequestParams(1, this.perPage);
+      await this.getData(params);
     },
     handlePageChange(value) {
       this.page = value;
       this.size = 10;
       this.retrieveTutorials();
     },
+    async changeEstado(row, estado) {
+      const certifica = {
+        estado: estado,
+        id: row.item.id_cer,
+      };
+      await this.updateEstado(certifica);
+      this.retrieveTutorials();
+    },
   },
-  beforeMount() {
-    this.getData({ page: 0, size: 10 });
+  async beforeMount() {
+    await this.getData({ page: 0, size: 10 });
     this.page = this.dataTable.currenPage;
     this.count = this.dataTable.totalItems;
   },

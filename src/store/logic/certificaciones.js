@@ -15,6 +15,10 @@ export default {
       state.dataTable = [];
       state.dataTable = payload;
     },
+    getData(state, payload) {
+      state.dataTable = [];
+      state.dataTable = payload;
+    },
     showLoader(state) {
       state.loading = true;
     },
@@ -57,7 +61,7 @@ export default {
     async getDataByCurso({
       commit
     }, payload) {
-      try {     
+      try {
         commit("showLoader");
         const response = await axios.get(`/certificaciones/getByCurso?idcur=${payload}`);
         commit("setData", response.data);
@@ -84,24 +88,7 @@ export default {
           type: "error",
         });
       }
-    },
-    async deleteItem({
-      dispatch,
-      state
-    }) {
-      try {
-        await axios.delete(`/certificaciones/${state.deleteId}`);
-        this._vm.$toasted.show("Certificaciones delete", {
-          type: "success",
-        });
-
-        dispatch("getData");
-      } catch (e) {
-        this._vm.$toasted.show("Error: " + e, {
-          type: "error",
-        });
-      }
-    },
+    }, 
     async getDataForm({
       commit
     }, payload) {
@@ -133,11 +120,25 @@ export default {
       try {
         console.log(payload)
         const result = await axios.put(`/certificaciones/${id}`, payload);
-        this._vm.$toasted.show("Empresa actualizada", {
+        this._vm.$toasted.show("Registro actualizado", {
           type: "success",
         });
 
         commit(`getData`, result.data);
+      } catch (e) {
+        this._vm.$toasted.show("Error: " + e, {
+          type: "error",
+        });
+      }
+    },
+    async editEstado({commit}, payload) {
+      const id = payload.id
+      try {
+        console.log(commit)
+        await axios.put(`/certificaciones/updateEstado/${id}`, payload);
+        this._vm.$toasted.show("Registro actualizado", {
+          type: "success",
+        });        
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
           type: "error",

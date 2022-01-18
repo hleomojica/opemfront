@@ -15,20 +15,20 @@
           </b-form-group>
         </b-col>
         <b-col sm="4">
-          <b-form-group label="Fecha Inicio" label-for="fechai">
+          <b-form-group label="Fecha Expedición" label-for="fechai">
             <b-form-input
               type="date"
-              label="Fecha Inicio"
+              label="Fecha Expedición"
               :state="validateState('fechainicio')"
               v-model="dataForm.fechainicio"
             />
           </b-form-group>
         </b-col>
         <b-col sm="4">
-          <b-form-group label="Fecha Fin" label-for="fechafin">
+          <b-form-group label="Fecha Vencimiento" label-for="fechafin">
             <b-form-input
               type="date"
-              label="Fecha Fin"
+              label="Fecha Vencimiento"
               :state="validateState('fechafin')"
               v-model="dataForm.fechafin"
             />
@@ -78,6 +78,7 @@ export default {
         fechainicio: "",
         fechafin: "",
         horas: "",
+        estado:0
       },
     };
   },

@@ -213,8 +213,6 @@ export default {
         }
         this.$router.push(this.cancelUrl);
       } catch (e) {
-        console.log(e);
-
         this._vm.$toasted.show("Error: " + e, {
           type: "error",
         });

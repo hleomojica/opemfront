@@ -27,6 +27,7 @@ import CursosNew from "@/components/LOGIC/cursos/CursosNew";
 import CertificacionesNew from "@/components/LOGIC/certificaciones/CertificacionesNew";
 import EmpresasNew from "@/components/LOGIC/empresas/EmpresasNew";
 import ColaboradoresNew from "@/components/LOGIC/colaboradores/ColaboradoresNew";
+import ColaboradoresRegistro from "@/components/LOGIC/colaboradores/ColaboradoresRegistro";
 import CertColaboradoresNew from "@/components/LOGIC/certcolaboradores/CertColaboradoresNew";
 import RolesNew from "@/components/LOGIC/roles/RolesNew";
 import CertColaboradoresPdf from "@/components/LOGIC/certcolaboradores/CertColaboradoresPdf";
@@ -51,6 +52,11 @@ export default new Router({
       path: "/Certificados/:cedula",
       name: 'CertColaboradoresConsulta',
       component: CertColaboradorConsulta,
+    },
+    {
+      path: '/registro',
+      name: 'registro',
+      component: ColaboradoresRegistro,
     },
     {
       path: "/error",
@@ -135,7 +141,7 @@ export default new Router({
           path: "colaboradores",
           name: "Colaboradores",
           component: Colaboradores,
-        },
+        },     
         {
           path: 'colaboradores/nuevo',
           name: 'colaboradoresnew',

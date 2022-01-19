@@ -1,21 +1,75 @@
 <template>
   <div>
+    <!-- opciones -->
     <b-button-group class="mb-2">
-      <router-link
+      <b-button
         :to="{
           name: 'certcolaboradoresnew',
           params: {
             father: 'CertColaboradores',
           },
         }"
+        variant="outline-primary"
       >
-        <b-button variant="outline-primary">
-          <b-icon icon="plus-circle-fill"></b-icon> Nueva
-        </b-button>
-      </router-link>
+        <b-icon icon="plus-circle-fill"></b-icon> Nueva
+      </b-button>
+      <b-button
+        :class="visiblecol ? null : 'collapsed'"
+        :aria-expanded="visiblecol ? 'true' : 'false'"
+        aria-controls="colfilter"
+        @click="visiblecol = !visiblecol"
+        :variant="visiblecol ? 'primary' : 'outline-primary'"
+      >
+        <b-icon icon="search"></b-icon> Filtro
+      </b-button>
     </b-button-group>
+    <!-- filtros -->
+    <b-collapse id="colfilter" v-model="visiblecol">
+      <b-card border-variant="secundary">
+        <b-card-text>
+          <b-container fluid>
+            <b-row class="my-1">
+              <b-col md="3" sm="12" class="mt-2">
+                <b-form-select
+                  :options="dataEmpresa"
+                  value-field="id_emp"
+                  text-field="nombre_emp"
+                  v-model="idemp"
+                >
+                  <b-form-select-option value=""
+                    >-Todas las Empresas-</b-form-select-option
+                  >
+                </b-form-select>
+              </b-col>
+              <b-col md="3" sm="12" class="mt-2">
+                <b-form-select
+                  :options="dataCursos"
+                  value-field="id_cur"
+                  text-field="nombre_cur"
+                  v-model="idcur"
+                  @change="retrieveParam()"
+                >
+                  <b-form-select-option value=""
+                    >-Todos los Cursos-</b-form-select-option
+                  >
+                </b-form-select>
+              </b-col>
+              <b-col md="2" sm="12" class="mt-2">
+                <b-form-input
+                  id="cohorte"
+                  v-model="cohorte"
+                  placeholder="Cohorte"
+                  @keyup="retrieveParam"
+                ></b-form-input>
+              </b-col>
+            </b-row>
+          </b-container>
+        </b-card-text>
+      </b-card>
+    </b-collapse>
 
     <div v-if="loading"><Loader /></div>
+    <!-- tabla -->
     <b-table
       v-else
       striped
@@ -40,15 +94,6 @@
             Editar
           </b-button>
         </router-link>
-        <b-button
-          pill
-          variant="danger"
-          size="sm"
-          @click="info(row.item, row.index, $event.target)"
-        >
-          <b-icon icon="trash-fill" aria-hidden="true"></b-icon>
-          Delete
-        </b-button>
       </template>
 
       <template #cell(edit)="row">
@@ -69,10 +114,9 @@
             name: 'certcolaboradorespdf',
             params: {
               father: 'CertColaboradores',
-              id:row.item.id_ceco
+              id: row.item.id_ceco,
             },
           }"
-         
         >
           <b-icon icon="download" aria-hidden="true"></b-icon>
         </b-button>
@@ -98,26 +142,13 @@
       class="mt-4"
       @change="handlePageChange"
     ></b-pagination>
-    <!-- Info modal -->
-    <b-modal :id="infoModal.id" title="Cuidado !" hide-footer>
-      <div class="d-block text-center">
-        Esta seguro de eliminar la empresa
-        <strong>{{ infoModal.empresa }}</strong>
-      </div>
-      <b-button class="mt-3" variant="outline-danger" block @click="del"
-        >Eliminar</b-button
-      >
-    </b-modal>
-
   </div>
 </template>
-
 
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
 import Loader from "@/components/Loader/Loader";
 import { validationMixin } from "vuelidate";
-
 
 export default {
   mixins: [validationMixin],
@@ -147,51 +178,48 @@ export default {
         { key: "edit", label: "" },
         { key: "pdf", label: "" },
       ],
+      idemp: "",
+      idcol: "",
+      idcur: "",
+      cohorte: "",
+      visiblecol: false,
       infoModal: {
         id: "info-modal",
         empresa: "",
-      },   
+      },
       page: 1,
       count: 0,
       pageSize: 10,
-    
     };
   },
   computed: {
     ...mapState({
       dataTable: (state) => state.certcolaboradores.dataTable,
+      dataEmpresa: (state) => state.empresas.dataList,
+      dataCursos: (state) => state.cursos.dataTable,
       loading: (state) => state.certcolaboradores.loading,
     }),
   },
-  methods: {
-    info(item, index, button) {
-      this.infoModal.empresa = item.nombre_emp;
-      this.setDeleteId(item.id_emp);
-      this.$root.$emit("bv::show::modal", this.infoModal.id, button);
-    },
+  methods: {  
     ...mapActions({
       getData: "certcolaboradores/getData",
-      editEstado: "certcolaboradores/editEstado",
-      deleteItem: "certcolaboradores/deleteItem",
+      editEstado: "certcolaboradores/editEstado",     
+      getDataEmpresa: "empresas/getDataList",
+      getDataCursos: "cursos/getData",
     }),
     ...mapMutations({
-      setDeleteId: "certcolaboradores/setDeleteId",
       hideLoader: "certcolaboradores/hideLoader",
       showLoader: "certcolaboradores/showLoader",
-    }),
-    del() {
-      this.$bvModal.hide("del");
-      this.deleteItem();
-    },
-    getRequestParams(page, pageSize, idcol, idcer, idemp) {
+    }),   
+    getRequestParams(page, pageSize, idcol, idemp, idcur, cohorte) {
       let params = {};
       if (idcol) {
         params["idcol"] = idcol;
       }
-      if (idcol) {
-        params["idcer"] = idcer;
+      if (idcur) {
+        params["idcur"] = idcur;
       }
-      if (idcol) {
+      if (idemp) {
         params["idemp"] = idemp;
       }
       if (page) {
@@ -200,31 +228,45 @@ export default {
       if (pageSize) {
         params["size"] = pageSize;
       }
+      if (cohorte) {
+        params["cohorte"] = cohorte;
+      }
       return params;
     },
-    retrieveParam() {
-      const params = this.getRequestParams(this.page, this.pageSize);
-      this.getData(params);
+    async retrieveParam() {
+      const params = this.getRequestParams(
+        this.page,
+        this.pageSize,
+        this.idcol,
+        this.idemp,
+        this.idcur,
+        this.cohorte
+      );
+      await this.getData(params);
+
+      this.page = this.dataTable.currentPage + 1;
+      this.count = this.dataTable.totalItems;
     },
     handlePageChange(value) {
       this.page = value;
       this.retrieveParam();
     },
     changeEstado(row, check) {
-      console.log(row.item, "  ---------- ", check);
       const certificado = {
         estado: check,
         id: row.item.id_ceco,
       };
       this.editEstado(certificado);
     },
+    filter() {
+      this.retrieveParam();
+    },
   },
 
-  beforeMount() {
-    const params = this.getRequestParams(1, 10);
-    this.getData(params);
-    this.page = this.dataTable.currenPage;
-    this.count = this.dataTable.totalItems;
+  async beforeMount() {
+    await this.retrieveParam();
+    await this.getDataEmpresa();
+    await this.getDataCursos();
   },
 };
 </script>

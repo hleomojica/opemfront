@@ -7,10 +7,8 @@ export function isPermitted(modulo) {
         const modules = JSON.parse(decryptedText)
      
         for (var d = 0; d < modules.length; d++) {
-            var modu = modules[d]
-                    
-            if (modu.nombre_mod.toLowerCase() == modulo.toLowerCase() && modu.roles.length > 0) {
-              
+            var modu = modules[d]                    
+            if (modu.nombre_mod.toLowerCase() == modulo.toLowerCase() && modu.roles.length > 0) {              
                 if (modu.roles[0].permisosroles && modu.roles[0].permisosroles.ver_prol == 1) {
                     return true
                 }

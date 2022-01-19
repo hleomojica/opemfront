@@ -20,7 +20,7 @@
         </a>
       </b-nav-item>
     </b-nav>
-    <b-nav>
+    <!-- <b-nav>
       <b-form class="d-sm-down-none ml-5" inline>
         <b-form-group>
           <b-input-group class="input-group-no-border">
@@ -33,7 +33,7 @@
           </b-input-group>
         </b-form-group>
       </b-form>
-    </b-nav>
+    </b-nav> -->
     <a class="navbarBrand d-md-none">
       <img src="../../assets/logoopem.png" style="width: 120px" alt="" />
     </a>
@@ -103,6 +103,7 @@ export default {
   components: { Notifications },
   data() {
     return {
+      datauser: null,
       nameuser: null,
     };
   },
@@ -149,8 +150,8 @@ export default {
     },
   },
   created() {
-    const dataUser = JSON.parse(localStorage.getItem("datauser"));
-    this.nameuser = dataUser.nombres_col;
+    this.datauser = JSON.parse(localStorage.getItem("datauser"));
+    this.nameuser = this.datauser.nombres_col;
   },
 };
 </script>

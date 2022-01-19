@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <b-button-group class="mb-2">
@@ -13,24 +14,13 @@
       >
         <b-icon icon="plus-circle-fill"></b-icon> Nueva
       </b-button>
-
-      <xlsx-workbook>
-        <xlsx-sheet
-          :collection="dataTable.items"
-          key="sheet"
-          sheet-name="sheetname"
-        />
-        <xlsx-download>
-          <b-button variant="outline-primary">
-            <b-icon icon="download"></b-icon> Exportar
-          </b-button>
-        </xlsx-download>
-      </xlsx-workbook>
-
-      <!-- <b-button variant="outline-primary">
+      <b-button
+        v-if="this.origen == 'colaboradores'"
+        variant="outline-primary"
+        @click="exportXls"
+      >
         <b-icon icon="download"></b-icon> Exportar
-      </b-button> -->
-
+      </b-button>
       <b-button v-b-toggle.collapse-1 variant="outline-primary">
         <b-icon icon="search"></b-icon> Filtro
       </b-button>
@@ -82,6 +72,7 @@
       </b-card>
     </b-collapse>
     <br />
+
     <div v-if="loading"><Loader /></div>
     <!-- tabla -->
     <b-table
@@ -138,16 +129,32 @@
         </router-link>
       </template>
     </b-table>
-    <!-- paginacion  -->
-    <b-pagination
-      v-model="page"
-      :total-rows="count"
-      :per-page="pageSize"
-      align="fill"
-      size="sm"
-      class="mt-4"
-      @change="handlePageChange"
-    ></b-pagination>
+
+    <b-container>
+      <b-row>
+        <!-- paginacion  -->
+        <b-col lg="10">
+          <b-pagination
+            v-model="page"
+            :total-rows="count"
+            :per-page="pageSize"
+            align="fill"
+            size="sm"
+            class="mt-4"
+            @change="handlePageChange"
+          ></b-pagination>
+        </b-col>
+        <!-- page num per pages -->
+        <b-col lg="2">
+          <b-form-select
+            size="lg"
+            v-model="pageSize"
+            :options="pageOptions"
+            @change="handlePageChange(1)"
+          ></b-form-select>
+        </b-col>
+      </b-row>
+    </b-container>
     <!-- Info modal -->
     <b-modal :id="infoModal.id" title="Cuidado !" hide-footer>
       <div class="d-block text-center">
@@ -161,16 +168,15 @@
   </div>
 </template>
 <script>
+/*eslint-disable no-unused-vars */
 import { mapActions, mapState, mapMutations } from "vuex";
 import Loader from "@/components/Loader/Loader";
 import { validationMixin } from "vuelidate";
-import XlsxWorkbook from "vue-xlsx/dist/components/XlsxWorkbook";
-import XlsxSheet from "vue-xlsx/dist/components/XlsxSheet";
-import XlsxDownload from "vue-xlsx/dist/components/XlsxDownload";
+import XLSX from "xlsx";
 
 export default {
   mixins: [validationMixin],
-  components: { Loader, XlsxWorkbook, XlsxSheet, XlsxDownload },
+  components: { Loader },
   props: {
     origen: {
       type: String,
@@ -195,6 +201,16 @@ export default {
         id: "info-modal",
         colaborador: "",
       },
+      pageOptions: [
+        5,
+        10,
+        20,
+        50,
+        {
+          value: Number.MAX_SAFE_INTEGER,
+          text: "Todos",
+        },
+      ],
       page: 1,
       count: 0,
       pageSize: 10,
@@ -289,6 +305,30 @@ export default {
         this.$refs.tablecol.refresh();
         this.$emit("load", val);
       }
+    },
+    exportXls() {
+      let dataExport = [...new Set(this.dataTable.items)];
+
+      const newdatexp = dataExport.map(
+        ({
+          id_col,
+          paisdocumento_col,
+          tipodocumento_col,
+          idemp_col,
+          estado_col,
+          pai,
+          tipodocumento,
+          empresa,
+          cuentaacceso,
+          ...keepAttrs
+        }) => keepAttrs
+      );
+
+      let data = XLSX.utils.json_to_sheet(newdatexp);
+      const workbook = XLSX.utils.book_new();
+      const filename = "Aprendices";
+      XLSX.utils.book_append_sheet(workbook, data, filename);
+      XLSX.writeFile(workbook, `${filename}.xlsx`);
     },
   },
   async beforeMount() {

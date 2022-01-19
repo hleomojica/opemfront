@@ -49,7 +49,7 @@
               >
             </form>
             <p>No puedes Ingresar?</p>
-            <router-link class="d-block text-center" to="login"
+            <router-link class="d-block text-center" to="/registro"
               >Registrarse</router-link
             >
           </b-card>

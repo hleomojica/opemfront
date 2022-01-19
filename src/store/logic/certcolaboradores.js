@@ -64,8 +64,14 @@ export default {
         if (payload.idcer) {
           param += `&idcer=${payload.idcer}`
         }
+        if (payload.idcur) {
+          param += `&idcur=${payload.idcur}`
+        }
         if (payload.numerodocumento) {
           param += `&numerodocumento=${payload.numerodocumento}`
+        }
+        if (payload.cohorte) {
+          param += `&cohorte=${payload.cohorte}`
         }
         const response = await axios.get(`/certcol${param}`);
 

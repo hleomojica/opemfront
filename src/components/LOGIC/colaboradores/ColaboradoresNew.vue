@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="submitHandler">
-    <h4 class="h4">{{ formName }} Colaboradores</h4>
+    <h4 class="h4">{{ titleForm }} Aprendiz</h4>
     <b-container fluid>
       <b-row class="my-1">
         <b-col sm="2">
@@ -102,6 +102,11 @@
             </b-form-select>
           </b-form-group>
         </b-col>
+        <b-col sm="12" v-if="!this.$route.params.id">
+          <b-form-checkbox v-model="dataForm.terminos" switch>
+            Acepta terminos tratamiento de datos
+          </b-form-checkbox>
+        </b-col>
       </b-row>
       <b-row>
         <b-col>
@@ -114,7 +119,7 @@
           >
             Limpiar
           </button>
-          <router-link :to="cancelUrl">
+          <router-link :to="cancelUrl" v-if="!this.publicform">
             <button type="button" class="btn btn-light ml-2">Volver</button>
           </router-link>
         </b-col>
@@ -131,7 +136,6 @@ export default {
   mixins: [validationMixin],
   data() {
     return {
-      formName: "Crear",
       dataForm: {
         paisdocumento: "",
         tipodocumento: "",
@@ -143,8 +147,22 @@ export default {
         telefono: "",
         direccion: "",
         idemp: "",
+        estado: 1,
+        terminos: true,
       },
     };
+  },
+  props: {
+    formName: {
+      default: "Crear",
+      type: String,
+      required: false,
+    },
+    publicform: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
   },
   validations: {
     dataForm: {
@@ -179,11 +197,23 @@ export default {
       dataPaises: (state) => state.paises.dataList,
       dataTipoDocs: (state) => state.tipodocumento.dataList,
       dataEmpresa: (state) => state.empresas.dataList,
+      statusOp: (state) => state.colaboradores.statusOp,
     }),
     cancelUrl() {
-      return (
-        "/" + this.$route.fullPath.split("/").slice(1).splice(0, 2).join("/")
-      );
+      if (!this.publicform)
+        return `/${this.$route.fullPath
+          .split("/")
+          .slice(1)
+          .splice(0, 2)
+          .join("/")}`;
+      else return "/";
+    },
+    titleForm() {
+      if (this.$route.params.id) {
+        return "Editar";
+      } else {
+        return this.formName;
+      }
     },
   },
   methods: {
@@ -206,14 +236,28 @@ export default {
             ...this.dataForm,
             id: this.$route.params.id,
           };
-
           await this.editItem(this.dataForm);
         } else {
-          await this.newItem(this.dataForm);
+          if (this.dataForm.terminos) {
+            if (this.publicform) {
+              this.dataForm.estado = 0;
+            }
+            await this.newItem(this.dataForm);
+
+            if (this.statusOp) {
+              this.$router.push(this.cancelUrl);
+            }
+          } else {
+            this.$toasted.show(
+              "Para continuar con el registro debe aceptar los terminos de tratamiento de datos",
+              {
+                type: "error",
+              }
+            );
+          }
         }
-        this.$router.push(this.cancelUrl);
       } catch (e) {
-        this._vm.$toasted.show("Error: " + e, {
+        this.$toasted.show("Error: " + e, {
           type: "error",
         });
       }
@@ -235,7 +279,6 @@ export default {
     },
     async setComponent(mode) {
       if (mode === "edit") {
-        this.formName = "Editar";
         try {
           await this.getDataForm(this.$route.params.id);
           this.resetData();

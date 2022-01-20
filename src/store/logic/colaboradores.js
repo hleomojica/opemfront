@@ -9,7 +9,8 @@ export default {
     modalOpen: false,
     dataForm: {},
     deleteId: null,
-    dataColaborador: []
+    dataColaborador: [],
+    statusOp: true
   },
   //-- Will modify the state
   mutations: {
@@ -27,6 +28,9 @@ export default {
     },
     showLoader(state) {
       state.loading = true;
+    },
+    setStatusOp(state, payload) {
+      state.statusOp = payload;
     },
     hideLoader(state) {
       state.loading = false;
@@ -105,15 +109,22 @@ export default {
     }, payload) {
       try {
         const result = await axios.post(`/colaboradores`, payload);
-        this._vm.$toasted.show("colaborador creado", {
+        this._vm.$toasted.show("Se registro correctamente", {
           type: "success",
         });
-
+        commit('setStatusOp', true)
         commit(`getData`, result.data);
       } catch (e) {
-        this._vm.$toasted.show("Error: " + e, {
-          type: "error",
-        });
+        commit('setStatusOp', false)
+        if (e.response.status == 403) {
+          this._vm.$toasted.show("La persona ya se encuentra registrada en la plataforma", {
+            type: "error",
+          });
+        } else {
+          this._vm.$toasted.show("Error: " + e, {
+            type: "error",
+          });
+        }
       }
     },
     async editItem({
@@ -166,5 +177,6 @@ export default {
         });
       }
     },
+
   },
 };

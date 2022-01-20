@@ -60,7 +60,7 @@ router.beforeEach((to, from, next) => {
   } else {
     rout = to.name
   }
-console.log(to.name)
+
   const pulbicsRoutes = ['Login', 'CertColaboradoresConsulta','registro']
   if (!pulbicsRoutes.includes(rout)) {
     if (!isAuthenticated() || !isPermitted(rout)) {  

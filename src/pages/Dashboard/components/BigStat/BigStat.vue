@@ -1,6 +1,6 @@
 <template>
   <div class="mb-xlg">
-    <Widget class="h-100" bodyClass="p-0 mt-0">
+    <div class="h-100" bodyClass="p-0 mt-0">
       <div class="d-flex justify-content-between flex-wrap px-4">
         <h4 class="d-flex align-items-center pb-1 bigStatTitle">
           <span
@@ -40,18 +40,17 @@
           </div>
         </div>
       </div>
-    </Widget>
+    </div>
   </div>
 </template>
 
 <script>
 import Vue from "vue";
-import Widget from "@/components/Widget/Widget";
 
 export default {
   name: "BigStat",
   props: ["product", "color", "total", "registrations", "bounce"],
-  components: { Widget },
+  components: {},
   data() {
     return {
       text: "Daily",

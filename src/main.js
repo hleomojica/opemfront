@@ -5,7 +5,6 @@ import {
   BootstrapVue,
   BootstrapVueIcons
 } from 'bootstrap-vue';
-import * as VueGoogleMaps from 'vue2-google-maps';
 import VueTouch from 'vue-touch';
 import Trend from 'vuetrend';
 import Toasted from 'vue-toasted';
@@ -18,7 +17,6 @@ import layoutMixin from './mixins/layout';
 import {
   AuthMixin
 } from './mixins/auth'
-import Widget from './components/Widget/Widget';
 import Vuelidate from 'vuelidate'
 import {
   ClientTable
@@ -30,9 +28,9 @@ import VueCryptojs from 'vue-cryptojs'
 import {
   isPermitted
 } from "./mixins/permissions";
-import {
-  isAuthenticated
-} from "./mixins/auth";
+
+import { isAuthenticated } from './mixins/auth'
+
 
 axios.defaults.baseURL = config.baseURLApi;
 Vue.use(VueCryptojs)
@@ -44,12 +42,6 @@ Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 Vue.use(VueTouch);
 Vue.use(Trend);
-Vue.component('Widget', Widget);
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: 'AIzaSyB7OXmzfQYua_1LEhRdqsoYzyJOPh9hGLg',
-  },
-});
 Vue.component('apexchart', VueApexCharts);
 Vue.mixin(layoutMixin);
 Vue.mixin(AuthMixin);
@@ -61,7 +53,7 @@ Vue.use(Toasted, {
 Vue.config.productionTip = false;
 
 router.beforeEach((to, from, next) => {
-
+  
   var rout = ""
   if (to.params.father) {
     rout = to.params.father
@@ -69,16 +61,16 @@ router.beforeEach((to, from, next) => {
     rout = to.name
   }
 
-  const pulbicsRoutes = ['Login', 'CertColaboradoresConsulta']
+  const pulbicsRoutes = ['Login', 'CertColaboradoresConsulta','registro']
   if (!pulbicsRoutes.includes(rout)) {
-    if (!isAuthenticated() || !isPermitted(rout)) {
+    if (!isAuthenticated() || !isPermitted(rout)) {  
       next({
         name: 'Login'
       })
-    } else {
+    } else {   
       next()
     }
-  } else {
+  } else { 
     next()
   }
 })

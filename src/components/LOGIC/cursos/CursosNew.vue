@@ -1,60 +1,58 @@
 <template>
-  <Widget>
-    <form @submit.prevent="submitHandler">
-      <h4 class="h4">{{ formName }} curso</h4>
+  <form @submit.prevent="submitHandler">
+    <h4 class="h4">{{ formName }} curso</h4>
 
-      <b-form-group label="nombre" label-for="nombre">
-        <b-form-input
-          type="text"
-          label="nombre"
-          v-model="dataForm.nombre"
-          :state="validateState('nombre')"
-          aria-describedby="input-error-nombre"
-        />
-        <b-form-invalid-feedback id="input-error-nombre"
-          >Debe ingresar el nombre.</b-form-invalid-feedback
-        >
-      </b-form-group>
+    <b-form-group label="nombre" label-for="nombre">
+      <b-form-input
+        type="text"
+        label="nombre"
+        v-model="dataForm.nombre"
+        :state="validateState('nombre')"
+        aria-describedby="input-error-nombre"
+      />
+      <b-form-invalid-feedback id="input-error-nombre"
+        >Debe ingresar el nombre.</b-form-invalid-feedback
+      >
+    </b-form-group>
 
-      <b-form-group label="Iniciales" label-for="iniciales">
-        <b-form-input
-          type="text"
-          label="iniciales"
-          v-model="dataForm.iniciales"
-          :state="validateState('iniciales')"
-          aria-describedby="input-error-iniciales"
-        />
-        <b-form-invalid-feedback id="input-error-iniciales"
-          >Debe ingresar las iniciales.</b-form-invalid-feedback
-        >
-      </b-form-group>
+    <b-form-group label="Iniciales" label-for="iniciales">
+      <b-form-input
+        type="text"
+        label="iniciales"
+        v-model="dataForm.iniciales"
+        :state="validateState('iniciales')"
+        aria-describedby="input-error-iniciales"
+      />
+      <b-form-invalid-feedback id="input-error-iniciales"
+        >Debe ingresar las iniciales.</b-form-invalid-feedback
+      >
+    </b-form-group>
 
-      <b-form-group label="descripcion" label-for="descripcion">
-        <b-form-textarea
-          :rows="3"
-          label="descripcion"
-          v-model="dataForm.descripcion"
-          :state="validateState('descripcion')"
-          aria-describedby="input-descripcion-error"
-        />
-        <b-form-invalid-feedback id="input-descripcion-error"
-          >Debe ingresar descripcion minimo 5 caracteres.</b-form-invalid-feedback
-        >
-      </b-form-group>
+    <b-form-group label="descripcion" label-for="descripcion">
+      <b-form-textarea
+        :rows="3"
+        label="descripcion"
+        v-model="dataForm.descripcion"
+        :state="validateState('descripcion')"
+        aria-describedby="input-descripcion-error"
+      />
+      <b-form-invalid-feedback id="input-descripcion-error"
+        >Debe ingresar descripcion minimo 5 caracteres.</b-form-invalid-feedback
+      >
+    </b-form-group>
 
-      <b-row>
-        <b-col>
-          <button type="submit" class="btn btn-primary">Guardar</button>
-          <button @click="resetData" type="button" class="btn btn-light ml-2">
-            Limpiar
-          </button>
-          <router-link :to="cancelUrl">
-            <button type="button" class="btn btn-light ml-2">Volver</button>
-          </router-link>
-        </b-col>
-      </b-row>
-    </form>
-  </Widget>
+    <b-row>
+      <b-col>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button @click="resetData" type="button" class="btn btn-light ml-2">
+          Limpiar
+        </button>
+        <router-link :to="cancelUrl">
+          <button type="button" class="btn btn-light ml-2">Volver</button>
+        </router-link>
+      </b-col>
+    </b-row>
+  </form>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";

@@ -1,14 +1,21 @@
 <template>
   <div>
     <b-button-group class="mb-2">
-      <router-link :to="$route.fullPath + '/new'">
-        <b-button variant="outline-primary">
-          <b-icon icon="plus-circle-fill"></b-icon> Nueva
-        </b-button>
-      </router-link>
+      <b-button
+        :to="{
+          name: 'empresasnew',
+          params: {
+            father: 'Empresas',
+          },
+        }"
+        variant="outline-primary"
+      >
+        <b-icon icon="plus-circle-fill"></b-icon> Nueva
+      </b-button>
+
       <b-button variant="outline-primary">
         <b-icon icon="search"></b-icon> Filtro
-      </b-button>  
+      </b-button>
     </b-button-group>
 
     <div v-if="loading"><Loader /></div>
@@ -21,12 +28,24 @@
       :fields="fields"
     >
       <template #cell(actions)="row">
-        <router-link :to="`${$route.fullPath}/${row.item.id_emp}/edit`">
-          <b-button pill size="sm" class="mr-2" variant="success">
-            <b-icon icon="pen-fill" aria-hidden="true"></b-icon>
-            Editar
-          </b-button>
-        </router-link>
+        <b-button
+          :to="{
+            name: 'empresasnew',
+            params: {
+              id: row.item.id_emp,
+              mode: 'edit',
+              father: 'Empresas',
+            },
+          }"
+          pill
+          size="sm"
+          class="mr-2"
+          variant="success"
+        >
+          <b-icon icon="pen-fill" aria-hidden="true"></b-icon>
+          Editar
+        </b-button>
+
         <b-button
           pill
           variant="danger"

@@ -1,18 +1,6 @@
 <template>
   <div>
-    <b-navbar
-      class="header d-print-none app-header"
-      variant="light"
-      type="light"
-    >
-      <b-navbar-brand href="#">
-        <img
-          src="../../../assets/logoopem.png"
-          class="d-inline-block align-top"
-          alt="Kitten"
-        />
-      </b-navbar-brand>
-    </b-navbar>
+    <Header />
 
     <b-container>
       <breadcrumb-history></breadcrumb-history>
@@ -52,7 +40,11 @@
         :fields="fields"
       >
         <template #cell(estado)="row">
-          <span v-if="row.item.estado_ceco ==1" class="badge badge-pill badge-success">Aprobado</span>
+          <span
+            v-if="row.item.estado_ceco == 1"
+            class="badge badge-pill badge-success"
+            >Aprobado</span
+          >
           <span v-else class="badge badge-pill badge-secondary">Rechazado</span>
         </template>
       </b-table>
@@ -75,13 +67,14 @@
 import { mapActions, mapState, mapMutations } from "vuex";
 import Loader from "@/components/Loader/Loader";
 import BreadcrumbHistory from "@/components/BreadcrumbHistory/BreadcrumbHistory";
+import Header from "@/components/Header/HeaderPublic";
 export default {
-  components: { Loader, BreadcrumbHistory },
+  components: { Loader, BreadcrumbHistory, Header },
   name: "CertColaboradoresTable",
   data() {
     return {
       fields: [
-        { key: "consecutivo_ceco", label: "#" },
+        { key: "consecutivo_ceco", label: "#", sortable: true },
         {
           key: "colaboradore.nombres_col",
           label: "Aprendiz",

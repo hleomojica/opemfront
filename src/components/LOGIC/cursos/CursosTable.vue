@@ -1,7 +1,8 @@
 <template>
   <div>
     <b-button-group class="mb-2">
-      <router-link
+      <b-button
+        variant="outline-primary"
         :to="{
           name: 'cursosnew',
           params: {
@@ -9,10 +10,9 @@
           },
         }"
       >
-        <b-button variant="outline-primary">
-          <b-icon icon="plus-circle-fill"></b-icon> Nuevo
-        </b-button>
-      </router-link>
+        <b-icon icon="plus-circle-fill"></b-icon> Nuevo
+      </b-button>
+
       <b-button variant="outline-primary">
         <b-icon icon="search"></b-icon> Filtro
       </b-button>
@@ -44,7 +44,6 @@
         >
           <b-button pill size="sm" class="mr-2" variant="success">
             <b-icon icon="pen-fill" aria-hidden="true"></b-icon>
-            
           </b-button>
         </router-link>
       </template>
@@ -56,7 +55,6 @@
           @click="info(row.item, row.index, $event.target)"
         >
           <b-icon icon="trash-fill" aria-hidden="true"></b-icon>
-          
         </b-button>
       </template>
     </b-table>
@@ -121,7 +119,7 @@ export default {
     },
     rowClicked(val, row) {
       console.log(val, row);
-      //this.$router.push(`/admin/cursos/${row.id}/edit`)
+      
     },
   },
 

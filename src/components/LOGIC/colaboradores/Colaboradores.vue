@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CoalboradoresTable />
+    <CoalboradoresTable :origen="origen" />
   </div>
 </template>
 <script>
@@ -10,7 +10,9 @@ export default {
   components: { Loader, CoalboradoresTable },
   name:'Colaboradores',
   data() {
-    return {};
+    return {
+      origen:'colaboradores'
+    };
   },
 };
 </script>

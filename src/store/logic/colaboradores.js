@@ -9,6 +9,8 @@ export default {
     modalOpen: false,
     dataForm: {},
     deleteId: null,
+    dataColaborador: [],
+    statusOp: true
   },
   //-- Will modify the state
   mutations: {
@@ -27,6 +29,9 @@ export default {
     showLoader(state) {
       state.loading = true;
     },
+    setStatusOp(state, payload) {
+      state.statusOp = payload;
+    },
     hideLoader(state) {
       state.loading = false;
     },
@@ -36,6 +41,12 @@ export default {
     setDeleteId(state, payload) {
       state.deleteId = payload;
     },
+    setDataColaborador(state, payload) {
+      state.dataColaborador.push(payload)
+    },
+    removeDataColaborador(state, payload) {
+      state.dataColaborador = state.dataColaborador.filter(col => col.id_col !== payload)
+    }
   },
   getters: {
     getDataNow(state) {
@@ -57,7 +68,7 @@ export default {
       try {
         commit("showLoader");
         const response = await axios.get(`/colaboradores?page=${payload.page}&size=${payload.size}${nombre}${idemp}${cedula}`);
-        commit("setData", response.data);        
+        commit("setData", response.data);
         commit("hideLoader");
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
@@ -98,15 +109,22 @@ export default {
     }, payload) {
       try {
         const result = await axios.post(`/colaboradores`, payload);
-        this._vm.$toasted.show("colaborador creado", {
+        this._vm.$toasted.show("Se registro correctamente", {
           type: "success",
         });
-
+        commit('setStatusOp', true)
         commit(`getData`, result.data);
       } catch (e) {
-        this._vm.$toasted.show("Error: " + e, {
-          type: "error",
-        });
+        commit('setStatusOp', false)
+        if (e.response.status == 403) {
+          this._vm.$toasted.show("La persona ya se encuentra registrada en la plataforma", {
+            type: "error",
+          });
+        } else {
+          this._vm.$toasted.show("Error: " + e, {
+            type: "error",
+          });
+        }
       }
     },
     async editItem({
@@ -159,5 +177,6 @@ export default {
         });
       }
     },
+
   },
 };

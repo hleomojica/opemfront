@@ -27,17 +27,11 @@ import CursosNew from "@/components/LOGIC/cursos/CursosNew";
 import CertificacionesNew from "@/components/LOGIC/certificaciones/CertificacionesNew";
 import EmpresasNew from "@/components/LOGIC/empresas/EmpresasNew";
 import ColaboradoresNew from "@/components/LOGIC/colaboradores/ColaboradoresNew";
+import ColaboradoresRegistro from "@/components/LOGIC/colaboradores/ColaboradoresRegistro";
 import CertColaboradoresNew from "@/components/LOGIC/certcolaboradores/CertColaboradoresNew";
 import RolesNew from "@/components/LOGIC/roles/RolesNew";
 import CertColaboradoresPdf from "@/components/LOGIC/certcolaboradores/CertColaboradoresPdf";
 import CertColaboradorConsulta from "@/components/LOGIC/certcolaboradores/CertColaboradorConsulta";
-
-// -- Template Resources
-import GoogleMapPage from "@/pages/Maps/Google";
-import ChartsPage from "@/pages/Charts/Charts";
-import NotificationsPage from "@/pages/Notifications/Notifications";
-
-import mockData from "@/pages/Dashboard/mock.js";
 
 Vue.use(Router);
 
@@ -60,6 +54,11 @@ export default new Router({
       component: CertColaboradorConsulta,
     },
     {
+      path: '/registro',
+      name: 'registro',
+      component: ColaboradoresRegistro,
+    },
+    {
       path: "/error",
       name: "Error",
       component: ErrorPage,
@@ -75,22 +74,7 @@ export default new Router({
           path: "dashboard",
           name: "Dashboard",
           component: Dashboard,
-        },    
-        {
-          path: "notifications",
-          name: "NotificationsPage",
-          component: NotificationsPage,
-        },
-        {
-          path: "components/charts",
-          name: "ChartsPage",
-          component: ChartsPage,
-        },
-        {
-          path: "components/maps",
-          name: "GoogleMapPage",
-          component: GoogleMapPage,
-        },
+        }  
       ],
     },
     {
@@ -100,7 +84,8 @@ export default new Router({
         name: "Dashboard"
       },
       component: Layout,
-      children: [{
+      children: [
+        {
           path: "cursos",
           name: "Cursos",
           component: Cursos,
@@ -141,13 +126,10 @@ export default new Router({
           component: Empresas,
         },
         {
-          path: 'empresas/:id/edit',
+          path: 'empresas/nuevo',
+          name:'empresasnew',
           component: EmpresasNew,
-        },
-        {
-          path: "empresas/new",
-          component: EmpresasNew,
-        },
+        },       
         {
           path: 'empresas/:id',
           beforeEnter(from, to, next) {
@@ -159,7 +141,7 @@ export default new Router({
           path: "colaboradores",
           name: "Colaboradores",
           component: Colaboradores,
-        },
+        },     
         {
           path: 'colaboradores/nuevo',
           name: 'colaboradoresnew',
@@ -181,10 +163,9 @@ export default new Router({
           component: CertColaboradoresNew,
         },
         {
-          path: "certcolaboradores/pdf",
+          path: "certcolaboradores/Certificado",
+          name:'certcolaboradorespdf',
           component: CertColaboradoresPdf,
-          props: mockData.dataPdf
-
         },
         {
           path: "configuraciones/paises",

@@ -14,44 +14,39 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col xs="12"> 
-        <Widget
-              title="<h5>2021 <span class='fw-semi-bold'>Certificaciones teset</span></h5>"
-              close collapse customHeader
-          >
-            <echart :options="cd.echarts.line" :init-options="initEchartsOptions" style="height: 370px"></echart>
-          </Widget>
+      <b-col xs="12">
+        <echart
+          :options="cd.echarts.line"
+          :init-options="initEchartsOptions"
+          style="height: 370px"
+        ></echart>
       </b-col>
     </b-row>
-
- 
   </div>
 </template>
 
 <script>
-import Widget from "@/components/Widget/Widget";
 import BigStat from "./components/BigStat/BigStat";
-import ECharts from 'vue-echarts/components/ECharts';
-import 'echarts/lib/chart/line';
+import ECharts from "vue-echarts/components/ECharts";
+import "echarts/lib/chart/line";
 import mock from "./mock";
-import {chartData} from './mock';
+import { chartData } from "./mock";
 
 import { Chart } from "highcharts-vue";
 
 export default {
   name: "Dashboard",
-  components: {
-    Widget,
+  components: {   
     BigStat,
     highcharts: Chart,
-    echart: ECharts
+    echart: ECharts,
   },
   data() {
     return {
       mock,
       cd: chartData,
       initEchartsOptions: {
-        renderer: 'canvas'
+        renderer: "canvas",
       },
     };
   },

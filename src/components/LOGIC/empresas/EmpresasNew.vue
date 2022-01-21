@@ -70,7 +70,36 @@
             />
           </b-form-group>
         </b-col>
-        <b-col sm="12">
+
+        <b-col sm="4">
+          <b-form-group
+            label="Telefono Persona contacto"
+            label-for="numpersonacontacto"
+          >
+            <b-form-input
+              type="number"
+              label="numpersonacontacto"
+              v-model="dataForm.numpersonacontacto"
+              :state="validateState('numpersonacontacto')"
+              aria-describedby="input-error-numpersonacontacto"
+            />
+          </b-form-group>
+        </b-col>
+        <b-col sm="4">
+          <b-form-group
+            label="Correo Persona contacto"
+            label-for="correopersonacontacto"
+          >
+            <b-form-input
+              type="email"
+              label="correopersonacontacto"
+              v-model="dataForm.correopersonacontacto"
+              :state="validateState('correopersonacontacto')"
+              aria-describedby="input-error-correopersonacontacto"
+            />
+          </b-form-group>
+        </b-col>
+        <b-col sm="4">
           <b-form-group label="Dirección" label-for="direccion">
             <b-form-input
               type="text"
@@ -123,6 +152,8 @@ export default {
         correo: "",
         direccion: "",
         personacontacto: "",
+        numpersonacontacto: "",
+        correopersonacontacto: "",
       },
     };
   },
@@ -153,8 +184,16 @@ export default {
         maxLength: maxLength(150),
       },
       personacontacto: {
+        required,
         minLength: minLength(5),
         maxLength: maxLength(150),
+      },
+      numpersonacontacto: {
+        minLength: minLength(7),
+        maxLength: maxLength(12),
+      },
+      correopersonacontacto: {
+        required,
       },
     },
   },
@@ -209,6 +248,8 @@ export default {
           correo: "",
           direccion: "",
           personacontacto: "",
+          numpersonacontacto: "",
+          correopersonacontacto: "",
         };
       }
     },
@@ -230,7 +271,7 @@ export default {
       }
     },
   },
-  beforeMount() {    
+  beforeMount() {
     this.setComponent(this.$route.params.mode);
   },
 };

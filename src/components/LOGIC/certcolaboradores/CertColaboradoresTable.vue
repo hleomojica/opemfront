@@ -165,8 +165,8 @@ export default {
         },
         { key: "certificacione.curso.nombre_cur", label: "Curso" },
         { key: "certificacione.cohorte_cer", label: "Cohorte" },
-        { key: "certificacione.fechainicio_cer", label: "Fecha inicio" },
-        { key: "certificacione.fechafin_cer", label: "Fecha fin" },
+        { key: "certificacione.fechainicio_cer", label: "Fecha Expedicion" },
+        { key: "certificacione.fechafin_cer", label: "Fecha Vencimiento" },
         { key: "empresa.nombre_emp", label: "Empresa" },
         {
           key: "descargado_ceco",

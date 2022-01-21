@@ -45,7 +45,7 @@
             class="badge badge-pill badge-success"
             >Aprobado</span
           >
-          <span v-else class="badge badge-pill badge-secondary">Rechazado</span>
+          <span v-else class="badge badge-pill badge-warning">En curso</span>
         </template>
       </b-table>
       <!-- paginacion  -->
@@ -82,8 +82,8 @@ export default {
         },
         { key: "certificacione.curso.nombre_cur", label: "Curso" },
         { key: "certificacione.cohorte_cer", label: "Cohorte" },
-        { key: "certificacione.fechainicio_cer", label: "Fecha inicio" },
-        { key: "certificacione.fechafin_cer", label: "Fecha fin" },
+        { key: "certificacione.fechainicio_cer", label: "Fecha Expedicion" },
+        { key: "certificacione.fechafin_cer", label: "Fecha Vencimiento" },
         { key: "empresa.nombre_emp", label: "Empresa" },
         { key: "estado", label: "Estado" },
       ],

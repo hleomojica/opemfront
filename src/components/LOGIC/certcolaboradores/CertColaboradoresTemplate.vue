@@ -6,7 +6,7 @@
         <span
           >ID
           <span class="id-text"
-            >ID {{ certificacion.certificacione.curso.iniciales_cur }}-{{
+            >{{ certificacion.certificacione.curso.iniciales_cur }}-{{
               certificacion.certificacione.cohorte_cer
                 .toString()
                 .padStart(4, "0")
@@ -80,6 +80,7 @@ export default {
   methods: {},
   computed: {},
   async mounted() {
+    console.log(this.certificacion)
     this.valueqr = `${this.valueqr}?id=${this.certificacion.idcer_ceco}`;
   },
 };

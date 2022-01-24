@@ -10,7 +10,7 @@
               certificacion.certificacione.cohorte_cer
                 .toString()
                 .padStart(4, "0")
-            }}/050
+            }}/ {{ certificacion.consecutivo_ceco.toString().padStart(4, "0") }}
           </span></span
         >
       </div>
@@ -65,10 +65,10 @@ import QrcodeVue from "qrcode.vue";
 
 export default {
   components: { Loader, QrcodeVue },
-  name: "CertCoalboradoresPdf",
+  name: "CertCoalboradoresTemplate",
   data() {
     return {
-      valueqr: "http://localhost:3001",
+      valueqr: "http://app.opem.com.co/Certificado/",
       sizeqr: 130,
     };
   },
@@ -80,8 +80,8 @@ export default {
   methods: {},
   computed: {},
   async mounted() {
-    console.log(this.certificacion)
-    this.valueqr = `${this.valueqr}?id=${this.certificacion.idcer_ceco}`;
+    console.log(this.certificacion);
+    this.valueqr = `${this.valueqr}${this.certificacion.colaboradore.numerodocumento_col}`;
   },
 };
 </script>

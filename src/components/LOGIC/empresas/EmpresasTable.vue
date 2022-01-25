@@ -127,7 +127,7 @@ export default {
       showLoader: "empresas/showLoader",
     }),
     del() {
-      this.$bvModal.hide("del");
+      this.$bvModal.hide("info-modal");
       this.deleteItem();
     },
     getRequestParams(page, pageSize) {

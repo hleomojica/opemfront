@@ -83,6 +83,7 @@ export default new Router({
       redirect: {
         name: "Dashboard"
       },
+      props: { crear: true },
       component: Layout,
       children: [
         {
@@ -138,17 +139,17 @@ export default new Router({
           },
         },
         {
-          path: "colaboradores",
+          path: "aprendices",
           name: "Colaboradores",
           component: Colaboradores,
         },     
         {
-          path: 'colaboradores/nuevo',
+          path: 'aprendices/nuevo',
           name: 'colaboradoresnew',
           component: ColaboradoresNew,
         },
         {
-          path: 'colaboradores/cuentaacceso',
+          path: 'aprendices/cuentaacceso',
           name: 'cuentaacceso',
           component: CuentaAcceso,
         },

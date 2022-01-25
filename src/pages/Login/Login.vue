@@ -7,7 +7,7 @@
       <b-row class="justify-content-md-center">
         <b-col lg="5">
           <b-card
-            title="Inicio de sesio"
+            title="Inicio de sesion"
             sub-title="Ingrese el numero de cedula."
           >
             <form class="mt" @submit.prevent="login">

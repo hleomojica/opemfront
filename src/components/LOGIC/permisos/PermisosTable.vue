@@ -74,7 +74,7 @@ export default {
   data() {
     return {
       fields: [
-        { key: "nombre_mod", label: "Nombre", sortable: true },
+        { key: "title_mod", label: "Nombre", sortable: true },
         { key: "ver", label: "Ver" },
         { key: "edit", label: "Editar" },
         { key: "crear", label: "Crear" },

@@ -267,6 +267,7 @@ export default {
     await this.retrieveParam();
     await this.getDataEmpresa();
     await this.getDataCursos();
+    console.log(this.$route)
   },
 };
 </script>

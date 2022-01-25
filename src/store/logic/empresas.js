@@ -125,12 +125,12 @@ export default {
       state
     }) {
       try {
-        console.log(state.deleteId);
+
         await axios.delete(`/empresa/${state.deleteId}`);
-        this._vm.$toasted.show("Empresa delete", {
+        this._vm.$toasted.show("Empresa eliminada", {
           type: "success",
         });
-        dispatch("getData");
+        dispatch("getData", { page: 0, size: 10 });
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
           type: "error",

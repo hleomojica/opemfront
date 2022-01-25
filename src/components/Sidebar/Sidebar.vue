@@ -17,10 +17,7 @@
       </header>
 
       <ul class="nav" v-for="modu in modulos" :key="modu.index">
-        <NavLink
-          v-if="
-            modu.roles.length > 0 && modu.roles[0].permisosroles.ver_prol == 1
-          "
+        <NavLink      
           :activeItem="activeItem"
           :header="modu.title_mod"
           :link="modu.route_mod"
@@ -103,7 +100,7 @@ export default {
       "staencripmaschimba"
     ).toString(this.CryptoJS.enc.Utf8);
     const allmodules = JSON.parse(decryptedText);
-    this.modulos = allmodules.filter(modu => !modu.father_mod)
+    this.modulos = allmodules.filter(modu => !modu.father_mod && modu.roles.length > 0 && modu.roles[0].permisosroles.ver_prol == 1)
 
   },
 };

@@ -13,13 +13,13 @@ body {
 .page {
   width: 210mm;
   min-height: 295mm;
-  padding: 20mm;
+  padding: 10mm 10mm 20mm 20mm;
   //margin: 10mm auto;
   border: 1px #d3d3d3 solid;
   border-radius: 5px;
   //background: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  background-image: url("../../../assets/certificado/format_back.jpg");
+  background-image: url("../../../assets/certificado/format_back.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
 
@@ -39,7 +39,7 @@ body {
       }
     }
     .cert-details {
-      margin-top: 120px;
+      margin-top: 110px;
       h3 {
         color: black;
         font-weight: 700;
@@ -53,7 +53,7 @@ body {
     }
 
     .cert-curso {
-      margin-top: 100px;
+      margin-top: 90px;
       span {
         color: black;
         font-size: 15px;

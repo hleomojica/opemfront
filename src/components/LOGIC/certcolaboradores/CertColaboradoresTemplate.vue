@@ -39,6 +39,8 @@
               day: "numeric",
             })
           }}
+          <br>
+          (Vigencia {{certificacion.certificacione.tiempovigencia_cer}} año)
         </h5>
       </div>
       <div class="cert-sign">

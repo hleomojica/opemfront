@@ -174,7 +174,7 @@
       >
     </b-modal>
     <!-- modal importacion -->
-    <b-modal size="xl" id="mdlImport" title="Importar Aprendiz">
+    <b-modal size="xl" id="mdlImport" hide-footer title="Importar Aprendiz">
       <ColaboradoresImport />
     </b-modal>
   </div>

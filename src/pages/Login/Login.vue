@@ -35,20 +35,23 @@
                   name="password"
                   placeholder="Contraseña"
                 />
-                <!-- <router-link class="d-block text-right" to="login"
-                  >Olvide mi Contraseña</router-link -->
+                <!-- 
+                  <p>No puedes Ingresar?</p>
+                  <router-link class="d-block text-right" to="login"
+                  >Olvide mi Contraseña</router-link 
                 >
+                -->
               </div>
 
               <b-button
                 type="submit"
                 size="sm"
                 class="auth-btn mb-3"
+                block
                 variant="inverse"
                 >Entrar</b-button
               >
             </form>
-            <p>No puedes Ingresar?</p>
             <router-link class="d-block text-center" to="/registro"
               >Registrarse</router-link
             >
@@ -88,7 +91,7 @@ export default {
     ...mapActions({
       loginUser: "auth/loginUser",
       receiveToken: "auth/receiveToken",
-      receiveLogin: "auth/receiveLogin"
+      receiveLogin: "auth/receiveLogin",
     }),
     async login() {
       this.username = this.$refs.username.value;

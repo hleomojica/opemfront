@@ -194,6 +194,7 @@ export default {
       dataCursos: (state) => state.cursos.dataTable,
       loading: (state) => state.certcolaboradores.loading,
       currentuser: (state) => state.auth.currentUser,
+      currentaction: (state) => state.modulos.currentaction,
     }),
   },
   methods: {
@@ -201,8 +202,7 @@ export default {
       getData: "certcolaboradores/getData",
       editEstado: "certcolaboradores/editEstado",
       getDataEmpresa: "empresas/getDataList",
-      getDataCursos: "cursos/getData",
-      getcurrent: "auth/getcurrent",
+      getDataCursos: "cursos/getData",     
     }),
     ...mapMutations({
       hideLoader: "certcolaboradores/hideLoader",
@@ -261,9 +261,8 @@ export default {
   },
 
   async beforeMount() {
-    this.permisos = this.$route.params.actions;
-    await this.getcurrent();
 
+    this.permisos = this.currentaction;
     if (this.permisos.filtrar_prol == 0) {
       this.idcol = this.currentuser.id_col;
     }

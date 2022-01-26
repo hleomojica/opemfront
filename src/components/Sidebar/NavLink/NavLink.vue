@@ -96,7 +96,7 @@ export default {
       this.changeSidebarActive(link);
       this.headerLinkWasClicked =
         !this.headerLinkWasClicked || !this.activeItem.includes(this.index);
-    },
+    }, 
   },
   computed: {
     fullIconName() {

@@ -10,10 +10,12 @@
           },
         }"
         variant="outline-primary"
+        v-if="permisos.crear_prol == 1"
       >
         <b-icon icon="plus-circle-fill"></b-icon> Nueva
       </b-button>
       <b-button
+        v-if="permisos.filtrar_prol == 1"
         :class="visiblecol ? null : 'collapsed'"
         :aria-expanded="visiblecol ? 'true' : 'false'"
         aria-controls="colfilter"
@@ -96,18 +98,11 @@
         </router-link>
       </template>
 
-      <template #cell(edit)="row">
-        <router-link :to="`${$route.fullPath}/${row.item.id_emp}/edit`">
-          <b-button pill size="sm" class="mr-2" variant="success">
-            <b-icon icon="pen-fill" aria-hidden="true"></b-icon>
-          </b-button>
-        </router-link>
-      </template>
       <template #cell(pdf)="row">
         <b-button
           pill
           size="sm"
-          :hidden="row.item.estado_ceco == 0"
+          :hidden="new Date(row.item.certificacione.fechafin_cer) < new Date() || row.item.estado_ceco == 0"
           class="mr-2"
           variant="warning"
           :to="{
@@ -156,6 +151,7 @@ export default {
   name: "CertColaboradoresTable",
   data() {
     return {
+      permisos: null,
       fields: [
         { key: "consecutivo_ceco", label: "#" },
         {
@@ -175,7 +171,6 @@ export default {
           tdClass: "d-none",
         },
         { key: "estado", label: "Aprobado" },
-        { key: "edit", label: "" },
         { key: "pdf", label: "" },
       ],
       idemp: "",
@@ -198,19 +193,21 @@ export default {
       dataEmpresa: (state) => state.empresas.dataList,
       dataCursos: (state) => state.cursos.dataTable,
       loading: (state) => state.certcolaboradores.loading,
+      currentuser: (state) => state.auth.currentUser,
     }),
   },
-  methods: {  
+  methods: {
     ...mapActions({
       getData: "certcolaboradores/getData",
-      editEstado: "certcolaboradores/editEstado",     
+      editEstado: "certcolaboradores/editEstado",
       getDataEmpresa: "empresas/getDataList",
       getDataCursos: "cursos/getData",
+      getcurrent: "auth/getcurrent",
     }),
     ...mapMutations({
       hideLoader: "certcolaboradores/hideLoader",
       showLoader: "certcolaboradores/showLoader",
-    }),   
+    }),
     getRequestParams(page, pageSize, idcol, idemp, idcur, cohorte) {
       let params = {};
       if (idcol) {
@@ -264,10 +261,18 @@ export default {
   },
 
   async beforeMount() {
+    this.permisos = this.$route.params.actions;
+    await this.getcurrent();
+
+    if (this.permisos.filtrar_prol == 0) {
+      this.idcol = this.currentuser.id_col;
+    }
+    if (this.permisos.editar_prol == 0) {
+      this.fields = this.fields.filter((a) => a.key != "estado");
+    }
     await this.retrieveParam();
     await this.getDataEmpresa();
     await this.getDataCursos();
-    console.log(this.$route)
   },
 };
 </script>

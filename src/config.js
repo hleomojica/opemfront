@@ -4,8 +4,6 @@ const baseURLApi = `${hostApi}${portApi ? `:${portApi}` : ``}/api/v1`;
 
 const redirectUrl = process.env.NODE_ENV === "http://localhost:3000/verify-email"
 
-
-
 export default {
   hostApi,
   portApi,
@@ -13,7 +11,7 @@ export default {
   redirectUrl,
   remote: "",
   auth: {
-    username: '1095811763',
+    username: '',
     password: ''
   },
   isBackend: process.env.VUE_APP_BACKEND,

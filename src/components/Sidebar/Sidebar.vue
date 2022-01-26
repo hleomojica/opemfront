@@ -23,6 +23,7 @@
           :link="modu.route_mod"
           :iconName="modu.icon_mod"
           :index="modu.nombre_mod"
+          :actions="modu.roles[0].permisosroles"
           isHeader
           :childrenLinks="modu.Submodulos.length > 0 ? modu.Submodulos : null"
         />
@@ -101,6 +102,7 @@ export default {
     ).toString(this.CryptoJS.enc.Utf8);
     const allmodules = JSON.parse(decryptedText);
     this.modulos = allmodules.filter(modu => !modu.father_mod && modu.roles.length > 0 && modu.roles[0].permisosroles.ver_prol == 1)
+   
 
   },
 };

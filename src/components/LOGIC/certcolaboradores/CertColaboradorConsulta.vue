@@ -41,11 +41,18 @@
       >
         <template #cell(estado)="row">
           <span
-            v-if="row.item.estado_ceco == 1"
-            class="badge badge-pill badge-success"
-            >Aprobado</span
+            v-if="new Date(row.item.certificacione.fechafin_cer) < new Date()"
+            class="badge badge-pill badge-default"
+            >Vencido</span
           >
-          <span v-else class="badge badge-pill badge-warning">En curso</span>
+          <template v-else>
+            <span
+              v-if="row.item.estado_ceco == 1"
+              class="badge badge-pill badge-success"
+              >Aprobado</span
+            >
+            <span v-else class="badge badge-pill badge-warning">En curso</span>
+          </template>
         </template>
       </b-table>
       <!-- paginacion  -->

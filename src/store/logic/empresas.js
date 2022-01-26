@@ -51,11 +51,9 @@ export default {
     async getDataList({
       commit
     }) {
-      try {
-        commit("showLoader");
+      try {   
         const response = await axios.get(`/empresa`);
-        commit("getDataList", response.data.items);
-        commit("hideLoader");
+        commit("getDataList", response.data.items); 
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
           type: "error",

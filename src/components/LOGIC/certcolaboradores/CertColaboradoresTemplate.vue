@@ -82,7 +82,6 @@ export default {
   methods: {},
   computed: {},
   async mounted() {
-    console.log(this.certificacion);
     this.valueqr = `${this.valueqr}${this.certificacion.colaboradore.numerodocumento_col}`;
   },
 };

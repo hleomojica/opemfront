@@ -32,11 +32,11 @@
       ref="html2Pdf"
     >
       <section slot="pdf-content">
-        <CertColaboradoresTemplate :certificacion="this.dataItem" />
+        <CertColaboradoresTemplate :certificacion="dataItem" />
       </section>
     </vue-html2pdf>
 
-    <CertColaboradoresTemplate :certificacion="this.dataItem" />
+    <CertColaboradoresTemplate :certificacion="dataItem" /> 
   </div>
 </template>
 <script>

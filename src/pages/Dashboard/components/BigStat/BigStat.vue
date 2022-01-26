@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-xlg">
+  <b-card class="mb-xlg">
     <div class="h-100" bodyClass="p-0 mt-0">
       <div class="d-flex justify-content-between flex-wrap px-4">
         <h4 class="d-flex align-items-center pb-1 bigStatTitle">
@@ -41,7 +41,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </b-card>
 </template>
 
 <script>

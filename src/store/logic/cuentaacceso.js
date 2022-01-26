@@ -65,7 +65,7 @@ export default {
         const response = await axios.get(`/cuentaacceso?idcol=${payload}`);
         if (response.data.length > 0) {
           let newData = {
-            id: response.data[0].id_cue || "",           
+            id: response.data[0].id_cue || "",
             idrol: response.data[0].idroles_cue || "",
           }
           commit("getDataForm", newData);
@@ -89,6 +89,22 @@ export default {
         });
 
         commit(`getData`, result.data);
+      } catch (e) {
+        this._vm.$toasted.show("Error: " + e, {
+          type: "error",
+        });
+      }
+    },
+    async editItem({
+      commit
+    }, payload) {
+      try {
+        await axios.put(`/cuentaacceso/${payload.id}`, payload);
+        this._vm.$toasted.show("Cuenta de acceso actualizada correctamente", {
+          type: "success",
+        });
+
+        commit(`getData`, payload);
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
           type: "error",

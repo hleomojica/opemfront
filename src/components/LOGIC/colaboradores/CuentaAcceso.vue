@@ -92,6 +92,7 @@ export default {
         password: "",
         idrol: "",
       },
+      flagEdit: false,
     };
   },
   validations: {
@@ -123,13 +124,31 @@ export default {
       editItem: "cuentaacceso/editItem",
       getDataForm: "cuentaacceso/getDataForm",
       getDataRoles: "roles/getData",
+      sendEmail: "email/sendEmail",
     }),
     async submitHandler() {
       this.$v.dataForm.$touch();
       if (this.$v.dataForm.$anyError) {
         return;
       }
+      if (this.dataForm.password != this.confirmpass) {
+        this.$toasted.show(
+          "La contraseña no coincide, por favor confirme la contraseña",
+          {
+            type: "error",
+          }
+        );
+        return;
+      }
       try {
+        const dataemail = {
+          tipo: 1,
+          to: this.user.correopersonal_col,
+          username: this.dataForm.username,
+          pass: this.dataForm.password,
+          nombre: this.user.nombres_col,
+        };
+
         if (this.dataForm.id) {
           this.dataForm = {
             ...this.dataForm,
@@ -138,13 +157,28 @@ export default {
         } else {
           await this.newItem(this.dataForm);
         }
+        if (
+          String(dataemail.to)
+            .toLowerCase()
+            .match(
+              /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            )
+        ) {
+          await this.sendEmail(dataemail);
+        } else {
+          this.$toasted.show(
+            "No fue posible enviar correo ya que el usuario no cuenta con uno valido",
+            {
+              type: "info",
+            }
+          );
+        }
+
         this.$router.push(this.cancelUrl);
       } catch (e) {
-        console.log(e);
-        /*
-        this._vm.$toasted.show("Error: " + e, {
+        this.$toasted.show("Error: " + e, {
           type: "error",
-        });*/
+        });
       }
     },
 
@@ -157,7 +191,10 @@ export default {
           idrol: "",
         };
       }
-      this.dataForm.username = this.$route.params.cedula;
+      this.user = this.$route.params.user;
+
+      console.log(this.user);
+      this.dataForm.username = this.$route.params.user.numerodocumento_col;
       this.dataForm.idcolaborador = this.$route.params.id;
     },
     validateState(name) {

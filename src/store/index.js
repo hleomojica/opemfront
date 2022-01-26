@@ -17,6 +17,7 @@ import roles from './logic/roles'
 import modulos from './logic/modulos'
 import permisos from './logic/permisos'
 import cuentaacceso from './logic/cuentaacceso'
+import email from './logic/email'
 
 Vue.use(Vuex);
 
@@ -34,7 +35,8 @@ export default new Vuex.Store({
     roles,
     permisos,
     modulos,
-    cuentaacceso
+    cuentaacceso,
+    email
   },
  
 });

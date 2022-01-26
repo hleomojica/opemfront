@@ -12,13 +12,6 @@
       >
         <b-icon icon="plus-circle-fill"></b-icon> Nuevo
       </b-button>
-
-      <b-button variant="outline-primary">
-        <b-icon icon="search"></b-icon> Filtro
-      </b-button>
-      <b-button variant="outline-primary">
-        <b-icon icon="printer"></b-icon> Imprimir
-      </b-button>
     </b-button-group>
 
     <div v-if="loading"><Loader /></div>

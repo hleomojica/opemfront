@@ -127,7 +127,7 @@
             name: 'cuentaacceso',
             params: {
               id: row.item.id_col,
-              cedula: row.item.numerodocumento_col,
+              user: row.item,
               father: 'Colaboradores',
             },
           }"

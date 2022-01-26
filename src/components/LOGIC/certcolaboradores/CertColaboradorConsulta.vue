@@ -87,6 +87,11 @@ export default {
           label: "Aprendiz",
           sortable: true,
         },
+        {
+          key: "colaboradore.aprellidos_col",
+          label: "Apellidos",
+          sortable: true,
+        },
         { key: "certificacione.curso.nombre_cur", label: "Curso" },
         { key: "certificacione.cohorte_cer", label: "Cohorte" },
         { key: "certificacione.fechainicio_cer", label: "Fecha Expedicion" },

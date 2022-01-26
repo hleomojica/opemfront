@@ -11,13 +11,20 @@ export default {
       state.statusSend = payload;
     },
   },
-  actions: {     
+  actions: {
     async sendEmail({ commit }, payload) {
-      try {     
+      try {
         const result = await axios.post(`/email`, payload);
-        this._vm.$toasted.show("Email enviado", {
-          type: "success",
-        });
+
+        if (result.data.status == "fail") {
+          this._vm.$toasted.show("Error enviado correo electronico", {
+            type: "error",
+          });
+        } else {
+          this._vm.$toasted.show("Se envio correo electronico al correo:"+payload.to, {
+            type: "success",
+          });
+        }
         console.log(result)
         commit(`setStatusSend`, true);
       } catch (e) {
@@ -27,6 +34,6 @@ export default {
         });
       }
     },
-  
+
   },
 };

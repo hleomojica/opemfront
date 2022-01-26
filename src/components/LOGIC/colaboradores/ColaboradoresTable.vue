@@ -21,6 +21,15 @@
       >
         <b-icon icon="download"></b-icon> Exportar
       </b-button>
+
+      <b-button
+        v-if="this.origen == 'colaboradores'"
+        variant="outline-primary"
+        v-b-modal.mdlImport
+      >
+        <b-icon icon="upload"></b-icon> Importar
+      </b-button>
+
       <b-button v-b-toggle.collapse-1 variant="outline-primary">
         <b-icon icon="search"></b-icon> Filtro
       </b-button>
@@ -129,10 +138,9 @@
         </router-link>
       </template>
     </b-table>
-
+    <!-- paginacion  -->
     <b-container>
       <b-row>
-        <!-- paginacion  -->
         <b-col lg="10">
           <b-pagination
             v-model="page"
@@ -165,18 +173,23 @@
         >Eliminar</b-button
       >
     </b-modal>
+    <!-- modal importacion -->
+    <b-modal size="xl" id="mdlImport" hide-footer title="Importar Aprendiz">
+      <ColaboradoresImport />
+    </b-modal>
   </div>
 </template>
 <script>
 /*eslint-disable no-unused-vars */
 import { mapActions, mapState, mapMutations } from "vuex";
 import Loader from "@/components/Loader/Loader";
+import ColaboradoresImport from "./ColaboradoresImport.vue";
 import { validationMixin } from "vuelidate";
 import XLSX from "xlsx";
 
 export default {
   mixins: [validationMixin],
-  components: { Loader },
+  components: { Loader, ColaboradoresImport },
   props: {
     origen: {
       type: String,

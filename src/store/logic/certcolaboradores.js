@@ -155,15 +155,15 @@ export default {
       }
     },
     async editEstado({
-      commit
+      dispatch
     }, payload) {
       try {
-        const result = await axios.put(`/certcol/updateEstado/${payload.id}`, payload);
+        await axios.put(`/certcol/updateEstado/${payload.id}`, payload);
         this._vm.$toasted.show("Estado actualizado correctamente", {
           type: "success",
         });
-
-        commit(`getData`, result.data);
+        
+        dispatch("getData", { page: 0, size: 10 });
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
           type: "error",

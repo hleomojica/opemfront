@@ -3,7 +3,10 @@
     v-if="!childrenLinks && isHeader"
     :class="{ headerLink: true, className }"
   >
-    <router-link :to="link" class="sidebar-link">
+    <router-link
+      :to="{ name: index, params: { actions: actions } }"
+      class="sidebar-link"
+    >
       <span class="icon">
         <i :class="fullIconName"></i>
       </span>
@@ -16,7 +19,11 @@
   </li>
   <li v-else-if="childrenLinks" :class="{ headerLink: true, className }">
     <div @click="() => togglePanelCollapse(link)">
-      <router-link :to="link" event="" class="d-flex sidebar-link">
+      <router-link
+        :to="{ path: link, params: { actions: actions } }"
+        event=""
+        class="d-flex sidebar-link"
+      >
         <span class="icon">
           <i :class="fullIconName"></i>
         </span>
@@ -76,6 +83,7 @@ export default {
     label: { type: String },
     labelColor: { type: String, default: "warning" },
     index: { type: String },
+    actions: { type: Object },
   },
   data() {
     return {
@@ -103,7 +111,8 @@ export default {
     },
     subMenus() {
       return this.childrenLinks.filter(
-        (subs) => subs.roles.length > 0 && subs.roles[0].permisosroles.ver_prol == 1
+        (subs) =>
+          subs.roles.length > 0 && subs.roles[0].permisosroles.ver_prol == 1
       );
     },
   },

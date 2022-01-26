@@ -43,10 +43,9 @@
 import { mapActions, mapState } from "vuex";
 import Loader from "@/components/Loader/Loader";
 import CertColaboradoresTemplate from "./CertColaboradoresTemplate.vue";
-import QrcodeVue from "qrcode.vue";
 import VueHtml2pdf from "vue-html2pdf";
 export default {
-  components: { Loader, QrcodeVue, VueHtml2pdf, CertColaboradoresTemplate },
+  components: { Loader,  VueHtml2pdf, CertColaboradoresTemplate },
   name: "CertCoalboradoresPdf",
   data() {
     return {};

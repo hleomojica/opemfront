@@ -32,9 +32,9 @@
       </template>
       <template #cell(crear)="row">
         <b-form-checkbox
-          unchecked-value="not_accepted"
-          checked="1"
-          :value="loadPermisos(row, 'crear')"
+          unchecked-value="0"
+          value="1"
+          :checked="loadPermisos(row, 'crear')"
           switch
           @change="changeAction(row, $event, 'crear')"
         >
@@ -42,21 +42,31 @@
       </template>
       <template #cell(edit)="row">
         <b-form-checkbox
-          unchecked-value="not_accepted"
-          checked="1"
-          :value="loadPermisos(row, 'editar')"
+          unchecked-value="0"
+          value="1"
+          :checked="loadPermisos(row, 'editar')"
           switch
-          @change="changeAction(row)"
+          @change="changeAction(row, $event, 'editar')"
+        >
+        </b-form-checkbox>
+      </template>
+      <template #cell(filtrar)="row">
+        <b-form-checkbox
+          unchecked-value="0"
+          value="1"
+          :checked="loadPermisos(row, 'filtrar')"
+          switch
+          @change="changeAction(row, $event, 'filtrar')"
         >
         </b-form-checkbox>
       </template>
       <template #cell(delete)="row">
         <b-form-checkbox
-          unchecked-value="not_accepted"
-          checked="1"
-          :value="loadPermisos(row, 'eliminar')"
+          unchecked-value="0"
+          value="1"
+          :checked="loadPermisos(row, 'eliminar')"
           switch
-          @change="changeAction(row)"
+          @change="changeAction(row, $event, 'eliminar')"
         >
         </b-form-checkbox>
       </template>
@@ -74,10 +84,11 @@ export default {
   data() {
     return {
       fields: [
-        { key: "nombre_mod", label: "Nombre", sortable: true },
+        { key: "title_mod", label: "Nombre", sortable: true },
         { key: "ver", label: "Ver" },
         { key: "edit", label: "Editar" },
         { key: "crear", label: "Crear" },
+        { key: "filtrar", label: "Filtrar" },
         { key: "delete", label: "Eliminar" },
       ],
       dataForm: {},
@@ -109,8 +120,8 @@ export default {
       this.getData({ idrol: this.idrol });
     },
     async changeAction(row, check, tipo) {
-      var ver, crear, editar, eliminar;
-      ver = crear = editar = eliminar = 0;
+      var ver, crear, editar, eliminar, filtrar;
+      ver = crear = editar = eliminar = filtrar = 0;
 
       if (row.item.roles.length === 0) {
         if (tipo == "crear") {
@@ -119,13 +130,14 @@ export default {
         if (tipo == "ver") {
           ver = parseInt(check);
         }
-
         if (tipo == "editar") {
           editar = parseInt(check);
         }
-
         if (tipo == "eliminar") {
           eliminar = parseInt(check);
+        }
+        if (tipo == "filtrar") {
+          filtrar = parseInt(check);
         }
 
         this.dataForm = {
@@ -135,6 +147,7 @@ export default {
           crear: crear,
           editar: editar,
           eliminar: eliminar,
+          filtrar: filtrar,
         };
 
         await this.newItem(this.dataForm);
@@ -165,6 +178,12 @@ export default {
           eliminar = permisos.eliminar_prol || 0;
         }
 
+        if (tipo == "filtrar") {
+          filtrar = parseInt(check);
+        } else {
+          filtrar = permisos.filtrar_prol || 0;
+        }
+
         this.dataForm = {
           id: permisos.id_prol,
           idrol: this.idrol,
@@ -173,6 +192,7 @@ export default {
           crear: crear,
           editar: editar,
           eliminar: eliminar,
+          filtrar: filtrar,
         };
         await this.editItem(this.dataForm);
       }
@@ -192,6 +212,8 @@ export default {
             return row.item.roles[0].permisosroles.editar_prol;
           } else if (tipo === "eliminar") {
             return row.item.roles[0].permisosroles.eliminar_prol;
+          } else if (tipo === "filtrar") {
+            return row.item.roles[0].permisosroles.filtrar_prol;
           } else {
             return 0;
           }

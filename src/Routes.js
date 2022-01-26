@@ -40,7 +40,7 @@ export default new Router({
   routes: [{
       path: "/",
       redirect: {
-        name: "Dashboard"
+        name: "dashboard"
       }
     },
     {
@@ -72,7 +72,7 @@ export default new Router({
       },
       children: [{
           path: "dashboard",
-          name: "Dashboard",
+          name: "dashboard",
           component: Dashboard,
         }  
       ],
@@ -81,13 +81,14 @@ export default new Router({
       path: "/admin",
       name: "Admin",
       redirect: {
-        name: "Dashboard"
+        name: "dashboard"
       },
+      props: { crear: true },
       component: Layout,
       children: [
         {
           path: "cursos",
-          name: "Cursos",
+          name: "cursos",
           component: Cursos,
         },
         {
@@ -108,7 +109,7 @@ export default new Router({
         },
         {
           path: "certificaciones",
-          name: "Certificaciones",
+          name: "certificaciones",
           component: Certificaciones,
         },
         {
@@ -122,7 +123,7 @@ export default new Router({
         },
         {
           path: "empresas",
-          name: "Empresas",
+          name: "empresas",
           component: Empresas,
         },
         {
@@ -138,24 +139,24 @@ export default new Router({
           },
         },
         {
-          path: "colaboradores",
-          name: "Colaboradores",
+          path: "aprendices",
+          name: "colaboradores",
           component: Colaboradores,
         },     
         {
-          path: 'colaboradores/nuevo',
+          path: 'aprendices/nuevo',
           name: 'colaboradoresnew',
           component: ColaboradoresNew,
         },
         {
-          path: 'colaboradores/cuentaacceso',
+          path: 'aprendices/cuentaacceso',
           name: 'cuentaacceso',
           component: CuentaAcceso,
         },
         {
           path: "certcolaboradores",
-          name: "CertColaboradores",
-          component: CertColaboradores
+          name: "certcolaboradores",
+          component: CertColaboradores,
         },
         {
           path: "certcolaboradores/nuevo",

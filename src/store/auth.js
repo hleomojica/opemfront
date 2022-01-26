@@ -30,9 +30,14 @@ export default {
         LOGIN_REQUEST(state) {
             state.isFetching = true
         },
+        getCurrentuser(state, user) {
+            state.currentUser = user
+        }
     },
     actions: {
-        async findMe({ dispatch }) {
+        async findMe({
+            dispatch
+        }) {
             try {
                 const response = await axios.get('/auth/me')
                 return response.data
@@ -40,7 +45,9 @@ export default {
                 dispatch('logoutUser')
             }
         },
-        async doInit({ commit }, res) {
+        async doInit({
+            commit
+        }, res) {
             try {
                 let currentUser = null;
                 let token = localStorage.getItem('token');
@@ -52,7 +59,15 @@ export default {
                 commit('LOGIN_FAILURE', e)
             }
         },
-        async loginUser({ dispatch }, payload) {
+        getcurrent({
+            commit
+        }) {
+            let current = localStorage.getItem("datauser")
+            commit('getCurrentuser', JSON.parse(current))
+        },
+        async loginUser({
+            dispatch
+        }, payload) {
             let url = "/cuentaacceso/auth";
 
             dispatch('requestLogin') // Setting the loading flag
@@ -65,7 +80,7 @@ export default {
                     const resmod = await axios.get(`/modulos?idrol=${token.dataUser.idroles_cue}`)
                     const menu = resmod.data
 
-                    dispatch('receiveMenu', menu)                    
+                    dispatch('receiveMenu', menu)
                     dispatch('doInit', res)
 
                 } catch (e) {
@@ -78,14 +93,18 @@ export default {
                 dispatch('loginError', 'Something was wrong. Try again')
             }
         },
-        receiveMenu({ commit }, data) {
+        receiveMenu({
+            commit
+        }, data) {
 
-            const encrMenu = CryptoJS.AES.encrypt(JSON.stringify(data),"staencripmaschimba").toString();
+            const encrMenu = CryptoJS.AES.encrypt(JSON.stringify(data), "staencripmaschimba").toString();
             localStorage.setItem("menu", encrMenu);
             commit('MENU_ROL')
             router.push('/')
         },
-        receiveToken({ commit }, data) {
+        receiveToken({
+            commit
+        }, data) {
 
             let token = data.accesToken
             let user = jwt.decode(token)
@@ -93,7 +112,7 @@ export default {
             localStorage.setItem('user', JSON.stringify(user))
             localStorage.setItem('datauser', JSON.stringify(data.dataUser))
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            commit('LOGIN_SUCCESS')            
+            commit('LOGIN_SUCCESS')
         },
         logoutUser() {
             localStorage.removeItem('token')
@@ -103,13 +122,19 @@ export default {
             axios.defaults.headers.common['Authorization'] = ""
             router.push('/login')
         },
-        loginError({ commit }, payload) {
+        loginError({
+            commit
+        }, payload) {
             commit('LOGIN_FAILURE', payload)
         },
-        requestLogin({ commit }) {
+        requestLogin({
+            commit
+        }) {
             commit('LOGIN_REQUEST')
         },
-        receiveLogin({ commit }) {
+        receiveLogin({
+            commit
+        }) {
             commit('LOGIN_SUCCESS');
         },
     },

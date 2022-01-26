@@ -127,7 +127,7 @@ export default {
       showLoader: "empresas/showLoader",
     }),
     del() {
-      this.$bvModal.hide("del");
+      this.$bvModal.hide("info-modal");
       this.deleteItem();
     },
     getRequestParams(page, pageSize) {
@@ -140,23 +140,20 @@ export default {
       }
       return params;
     },
-    retrieveTutorials() {
+    async getEmpresas() {
       const params = this.getRequestParams(this.page, this.pageSize);
-      console.log(params);
-
-      this.getData(params);
+      await this.getData(params);
+      this.page = this.dataTable.currentPage + 1;
+      this.count = this.dataTable.totalItems;
     },
     handlePageChange(value) {
       this.page = value;
-      this.retrieveTutorials();
+      this.getEmpresas();
     },
   },
 
   beforeMount() {
-    const params = this.getRequestParams(1, 10);
-    this.getData(params);
-    this.page = this.dataTable.currenPage;
-    this.count = this.dataTable.totalItems;
+    this.getEmpresas();
   },
 };
 </script>

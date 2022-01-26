@@ -35,8 +35,8 @@
                   name="password"
                   placeholder="Contraseña"
                 />
-                <router-link class="d-block text-right" to="login"
-                  >Olvide mi Contraseña</router-link
+                <!-- <router-link class="d-block text-right" to="login"
+                  >Olvide mi Contraseña</router-link -->
                 >
               </div>
 

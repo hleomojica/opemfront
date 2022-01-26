@@ -1,5 +1,5 @@
 <template>
-  <Widget>
+  <b-card>
     <form @submit.prevent="submitHandler">
       <h4 class="h4">{{ formName }} Cuenta Acceso</h4>
       <b-container fluid>
@@ -72,7 +72,7 @@
         </b-row>
       </b-container>
     </form>
-  </Widget>
+  </b-card>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";

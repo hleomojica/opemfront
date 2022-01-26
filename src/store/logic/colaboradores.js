@@ -127,6 +127,22 @@ export default {
         }
       }
     },
+    async newArrayItem({
+      commit
+    }, payload) {
+      try {
+        const result = await axios.post(`/colaboradores/createArray`, payload);
+        this._vm.$toasted.show("Certificaciones creado", {
+          type: "success",
+        });
+
+        commit(`getData`, result.data);
+      } catch (e) {
+        this._vm.$toasted.show("Error: " + e, {
+          type: "error",
+        });
+      }
+    },
     async editItem({
       commit
     }, payload) {

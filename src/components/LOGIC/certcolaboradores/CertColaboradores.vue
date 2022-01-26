@@ -8,9 +8,13 @@ import CertCoalboradoresTable from "@/components/LOGIC/certcolaboradores/CertCol
 import Loader from "@/components/Loader/Loader";
 export default {
   components: { Loader, CertCoalboradoresTable },
-  name:'CertCoalboradores',
+  name: "CertCoalboradores",
+
   data() {
     return {};
   },
+  mounted(){
+    
+  }
 };
 </script>

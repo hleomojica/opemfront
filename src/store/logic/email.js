@@ -11,9 +11,8 @@ export default {
       state.statusSend = payload;
     },
   },
-  actions: {   
-  
-    async sendEmailchangepass({ commit }, payload) {
+  actions: {     
+    async sendEmail({ commit }, payload) {
       try {     
         const result = await axios.post(`/email`, payload);
         this._vm.$toasted.show("Email enviado", {

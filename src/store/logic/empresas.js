@@ -40,7 +40,7 @@ export default {
       try {
         commit("showLoader");
         const response = await axios.get(`/empresa?page=${payload.page}&size=${payload.size}`);
-        commit("getData", response.data);     
+        commit("getData", response.data);
         commit("hideLoader");
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
@@ -51,11 +51,9 @@ export default {
     async getDataList({
       commit
     }) {
-      try {
-        commit("showLoader");
+      try {   
         const response = await axios.get(`/empresa`);
-        commit("getDataList", response.data.items);
-        commit("hideLoader");
+        commit("getDataList", response.data.items); 
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
           type: "error",
@@ -69,7 +67,7 @@ export default {
         commit("showLoader");
 
         const response = await axios.get(`/empresa/${payload}`);
- 
+
         let newData = {
           nombre: response.data.items[0].nombre_emp || "",
           nit: response.data.items[0].nit_emp || "",
@@ -77,6 +75,8 @@ export default {
           correo: response.data.items[0].correo_emp || "",
           direccion: response.data.items[0].direccion_emp || "",
           personacontacto: response.data.items[0].personacontacto_emp || "",
+          numpersonacontacto: response.data.items[0].numpersonacontacto_emp || "",
+          correopersonacontacto: response.data.items[0].correopersonacontacto_emp || "",
         }
         commit("getDataForm", newData);
         commit("hideLoader");
@@ -123,12 +123,12 @@ export default {
       state
     }) {
       try {
-        console.log(state.deleteId);
+
         await axios.delete(`/empresa/${state.deleteId}`);
-        this._vm.$toasted.show("Empresa delete", {
+        this._vm.$toasted.show("Empresa eliminada", {
           type: "success",
         });
-        dispatch("getData");
+        dispatch("getData", { page: 0, size: 10 });
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
           type: "error",

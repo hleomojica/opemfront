@@ -37,6 +37,7 @@
                   value-field="id_emp"
                   text-field="nombre_emp"
                   v-model="idemp"
+                  @change="retrieveParam()"
                 >
                   <b-form-select-option value=""
                     >-Todas las Empresas-</b-form-select-option
@@ -102,7 +103,10 @@
         <b-button
           pill
           size="sm"
-          :hidden="new Date(row.item.certificacione.fechafin_cer) < new Date() || row.item.estado_ceco == 0"
+          :hidden="
+            new Date(row.item.certificacione.fechafin_cer) < new Date() ||
+            row.item.estado_ceco == 0
+          "
           class="mr-2"
           variant="warning"
           :to="{
@@ -156,7 +160,12 @@ export default {
         { key: "consecutivo_ceco", label: "#" },
         {
           key: "colaboradore.nombres_col",
-          label: "Colaborador",
+          label: "Nombre",
+          sortable: true,
+        },
+        {
+          key: "colaboradore.apellidos_col",
+          label: "Aprellido",
           sortable: true,
         },
         { key: "certificacione.curso.nombre_cur", label: "Curso" },
@@ -194,6 +203,7 @@ export default {
       dataCursos: (state) => state.cursos.dataTable,
       loading: (state) => state.certcolaboradores.loading,
       currentuser: (state) => state.auth.currentUser,
+      currentaction: (state) => state.modulos.currentaction,
     }),
   },
   methods: {
@@ -202,7 +212,6 @@ export default {
       editEstado: "certcolaboradores/editEstado",
       getDataEmpresa: "empresas/getDataList",
       getDataCursos: "cursos/getData",
-      getcurrent: "auth/getcurrent",
     }),
     ...mapMutations({
       hideLoader: "certcolaboradores/hideLoader",
@@ -261,9 +270,7 @@ export default {
   },
 
   async beforeMount() {
-    this.permisos = this.$route.params.actions;
-    await this.getcurrent();
-
+    this.permisos = this.currentaction;
     if (this.permisos.filtrar_prol == 0) {
       this.idcol = this.currentuser.id_col;
     }

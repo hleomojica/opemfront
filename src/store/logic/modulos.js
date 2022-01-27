@@ -8,6 +8,7 @@ export default {
     dataList: [],
     dataMenu: [],
     dataForm: {},
+    currentaction: {},
     loading: false,
     modalOpen: false,
     deleteId: null,
@@ -39,6 +40,10 @@ export default {
     setDeleteId(state, payload) {
       state.deleteId = payload;
     },
+    setcurrentaction(state, payload) {
+      state.currentaction = null;
+      state.currentaction = payload;
+    }
   },
   actions: {
     async getData({
@@ -48,7 +53,7 @@ export default {
         commit("showLoader");
         const response = await axios.get(`/modulos?idrol=${payload.idrol}`);
         commit("getData", response.data);
-     
+
         commit("hideLoader");
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
@@ -130,5 +135,16 @@ export default {
         });
       }
     },
+    getaction({ commit }, payload) {
+      if (payload) {
+        localStorage.setItem('currentaction', JSON.stringify(payload))
+        commit('setcurrentaction', payload)
+      } else {
+        const current = localStorage.getItem('currentaction')
+        commit('setcurrentaction', JSON.parse(current))
+      }
+    },
+
+
   },
 };

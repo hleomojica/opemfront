@@ -53,23 +53,23 @@ Vue.use(Toasted, {
 Vue.config.productionTip = false;
 
 router.beforeEach((to, from, next) => {
-  
+
   var rout = ""
   if (to.params.father) {
     rout = to.params.father
   } else {
     rout = to.name
   }
-  const pulbicsRoutes = ['Login', 'CertColaboradoresConsulta','registro']
+  const pulbicsRoutes = ['Login', 'CertColaboradoresConsulta', 'registro', 'perfil']
   if (!pulbicsRoutes.includes(rout)) {
-    if (!isAuthenticated() || !isPermitted(rout)) {  
+    if (!isAuthenticated() || !isPermitted(rout)) {
       next({
         name: 'Login'
       })
-    } else {   
+    } else {
       next()
     }
-  } else { 
+  } else {
     next()
   }
 })

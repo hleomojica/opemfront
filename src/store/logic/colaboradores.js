@@ -164,7 +164,6 @@ export default {
       state
     }) {
       try {
-        console.log(state.deleteId);
         await axios.delete(`/colaboradores/${state.deleteId}`);
         this._vm.$toasted.show("colaboradores delete", {
           type: "success",

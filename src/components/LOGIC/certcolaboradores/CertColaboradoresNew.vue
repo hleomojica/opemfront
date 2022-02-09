@@ -4,6 +4,11 @@
       <h4 class="h4">{{ formName }} Certificaciones</h4>
       <b-container fluid>
         <b-row class="my-1">
+          <b-col v-if="this.$route.params.id">
+            <b-form-group label="Aprendiz" label-for="aprendiz">
+              <b-form-input readonly :value="dataForm.nombres"> </b-form-input>
+            </b-form-group>
+          </b-col>
           <b-col sm="12">
             <b-form-group label="Cursos" label-for="curso">
               <b-form-select
@@ -31,7 +36,18 @@
               </b-form-select>
             </b-form-group>
           </b-col>
-          <b-col sm="12">
+          <b-col sm="12" v-if="this.$route.params.id">
+            <b-form-group label="Empresa" label-for="idemp">
+              <b-form-select
+                v-model="dataForm.idemp"
+                :options="dataEmpresa"
+                value-field="id_emp"
+                text-field="nombre_emp"
+              >
+              </b-form-select>
+            </b-form-group>
+          </b-col>
+          <b-col sm="12" v-if="!this.$route.params.id">
             <b-button
               pill
               type="button"
@@ -108,7 +124,9 @@ export default {
       dataForm: {
         idcur: "",
         idcer: "",
+        idemp: "",
         estado: 0,
+        nombres: "",
         descargado: 0,
       },
       infoModal: {
@@ -143,6 +161,8 @@ export default {
       dataCursos: (state) => state.cursos.dataTable,
       dataCert: (state) => state.certificaciones.dataTable,
       dataColaborador: (state) => state.colaboradores.dataColaborador,
+      dataItem: (state) => state.certcolaboradores.dataItem,
+      dataEmpresa: (state) => state.empresas.dataList,
     }),
     cancelUrl() {
       return (
@@ -156,10 +176,13 @@ export default {
       editItem: "certcolaboradores/editItem",
       getDataCert: "certificaciones/getDataByCurso",
       getDataCursos: "cursos/getData",
+      getDataById: "certcolaboradores/getDataById",
+      getDataEmpresa: "empresas/getDataList",
     }),
     ...mapMutations({
       removeDataColaborador: "colaboradores/removeDataColaborador",
       setDataColaborador: "colaboradores/setDataColaborador",
+      clearColaborador: "colaboradores/clearColaborador",
     }),
     info(button) {
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
@@ -194,8 +217,7 @@ export default {
           this.dataForm = {
             ...this.dataForm,
             id: this.$route.params.id,
-          };
-
+          };      
           await this.editItem(this.dataForm);
         } else {
           const dataCreate = [];
@@ -210,6 +232,8 @@ export default {
           });
 
           await this.newItem(dataCreate);
+
+          this.clearColaborador();
         }
         this.$router.push(this.cancelUrl);
       } catch (e) {
@@ -223,7 +247,9 @@ export default {
     },
     resetData() {
       if (this.dataForm) {
-        this.dataForm = this.data;
+        this.dataForm = this.dataItem;
+        this.changeCurso();
+        this.getDataEmpresa();
       } else {
         this.dataForm = {
           fechainicio: "",
@@ -240,7 +266,7 @@ export default {
       if (mode === "edit") {
         this.formName = "Editar";
         try {
-          await this.getDataForm(this.$route.params.id);
+          await this.getDataById(this.$route.params.id);
           this.resetData();
         } catch (e) {
           this._vm.$toasted.show("Error " + e, {

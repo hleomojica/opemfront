@@ -52,8 +52,8 @@ export default {
       commit
     }) {
       try {   
-        const response = await axios.get(`/empresa`);
-        commit("getDataList", response.data.items); 
+        const response = await axios.get(`/empresa/GetAll`);  
+        commit("getDataList", response.data); 
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
           type: "error",

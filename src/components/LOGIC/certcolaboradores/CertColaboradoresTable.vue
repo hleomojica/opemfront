@@ -120,6 +120,25 @@
           <b-icon icon="download" aria-hidden="true"></b-icon>
         </b-button>
       </template>
+      <template #cell(edit)="row">
+        <b-button
+          pill
+          size="sm"
+          class="mr-2"
+          variant="success"
+          :to="{
+            name: 'certcolaboradoresnew',
+            params: {
+              father: 'CertColaboradores',
+              mode: 'edit',
+              id: row.item.id_ceco,
+            },
+          }"
+        >
+          <b-icon icon="pen-fill" aria-hidden="true"></b-icon>
+        </b-button>
+      </template>
+
       <template #cell(estado)="row">
         <b-form-checkbox
           unchecked-value="0"
@@ -180,6 +199,7 @@ export default {
           tdClass: "d-none",
         },
         { key: "estado", label: "Aprobado" },
+        { key: "edit", label: "" },
         { key: "pdf", label: "" },
       ],
       idemp: "",
@@ -275,7 +295,9 @@ export default {
       this.idcol = this.currentuser.id_col;
     }
     if (this.permisos.editar_prol == 0) {
-      this.fields = this.fields.filter((a) => a.key != "estado");
+      this.fields = this.fields.filter(
+        (a) => a.key != "estado" && a.key != "edit"
+      );
     }
     await this.retrieveParam();
     await this.getDataEmpresa();

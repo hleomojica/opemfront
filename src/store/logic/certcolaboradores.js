@@ -114,7 +114,16 @@ export default {
       try {
         commit("showLoader");
         const response = await axios.get(`/certcol/GetById/${payload}`);
-        commit("setDataItem", response.data);
+        
+        let newData = {
+          id: response.data.id_ceco,
+          idcer: response.data.idcer_ceco || "",
+          idcol: response.data.idcol_ceco || "",
+          idemp: response.data.idemp_ceco || "",    
+          idcur:response.data.certificacione.curso.id_cur || "",  
+          nombres: response.data.colaboradore.nombres_col+" "+response.data.colaboradore.apellidos_col || "",      
+        }
+        commit("setDataItem", newData);
         commit("hideLoader");
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {

@@ -70,7 +70,7 @@ export default {
   name: "CertCoalboradoresTemplate",
   data() {
     return {
-      valueqr: "http://app.opem.com.co/Certificado/",
+      valueqr: "https://app.opem.com.co/#/Certificados/",
       sizeqr: 130,
     };
   },

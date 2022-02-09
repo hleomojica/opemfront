@@ -166,8 +166,8 @@
     <!-- Info modal -->
     <b-modal :id="infoModal.id" title="Cuidado !" hide-footer>
       <div class="d-block text-center">
-        Esta seguro de eliminar la empresa
-        <strong>{{ infoModal.empresa }}</strong>
+        ¡Se eliminara permanentemente el colaborador! <br />
+        Esta seguro de eliminar a <strong>{{ infoModal.colaborador }}</strong>
       </div>
       <b-button class="mt-3" variant="outline-danger" block @click="del"
         >Eliminar</b-button
@@ -242,8 +242,8 @@ export default {
   },
   methods: {
     info(item, index, button) {
-      this.infoModal.empresa = item.nombre_emp;
-      this.setDeleteId(item.id_emp);
+      this.infoModal.colaborador = item.nombres_col;
+      this.setDeleteId(item.id_col);
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
     },
     ...mapActions({
@@ -257,7 +257,7 @@ export default {
       showLoader: "colaboradores/showLoader",
     }),
     del() {
-      this.$bvModal.hide("del");
+      this.$bvModal.hide("info-modal");
       this.deleteItem();
     },
     getRequestParams(page, pageSize, nombre, empresa, cedula) {

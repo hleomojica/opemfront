@@ -46,6 +46,9 @@ export default {
     },
     removeDataColaborador(state, payload) {
       state.dataColaborador = state.dataColaborador.filter(col => col.id_col !== payload)
+    },
+    clearColaborador(state) {
+      state.dataColaborador = null;
     }
   },
   getters: {
@@ -94,6 +97,7 @@ export default {
             telefono: response.data[0].telefono_col,
             direccion: response.data[0].direccion_col,
             idemp: response.data[0].idemp_col,
+            cargo: response.data[0].cargo_col,
           }
           commit("getDataForm", newData);
         }
@@ -148,7 +152,7 @@ export default {
     }, payload) {
       try {
         const result = await axios.put(`/colaboradores/${payload.id}`, payload);
-        this._vm.$toasted.show("Registro actualizado", {
+        this._vm.$toasted.show("Registro actualizado correctamente", {
           type: "success",
         });
 
@@ -164,7 +168,6 @@ export default {
       state
     }) {
       try {
-        console.log(state.deleteId);
         await axios.delete(`/colaboradores/${state.deleteId}`);
         this._vm.$toasted.show("colaboradores delete", {
           type: "success",

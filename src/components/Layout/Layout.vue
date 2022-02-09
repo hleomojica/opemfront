@@ -10,7 +10,7 @@
         <router-view />
       </transition>
       <footer class="contentFooter">
-        Desarrollado por Mojidev - Admin Template Made by <a href="https://flatlogic.com" rel="nofollow noopener noreferrer" target="_blank">Flatlogic</a>
+        Desarrollado por Henrry / Jorge Mojica - 2022
       </footer>
     </v-touch>
   </div>

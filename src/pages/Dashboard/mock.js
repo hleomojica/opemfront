@@ -16,7 +16,7 @@ export default {
       total: '23',
       color: 'success',
       registrations: {
-        value: 830,
+        value: 15,
         profit: true,
       },
       bounce: {
@@ -26,10 +26,10 @@ export default {
     },
     {
       product: 'Empresas aliadas',
-      total: '754',
+      total: '54',
       color: 'danger',
       registrations: {
-        value: 30,
+        value: 10,
         profit: true,
       },
       bounce: {
@@ -39,10 +39,10 @@ export default {
     },
     {
       product: 'Cursos',
-      total: '1,025',
+      total: '34',
       color: 'info',
       registrations: {
-        value: 230,
+        value: 12,
         profit: true,
       },
       bounce: {

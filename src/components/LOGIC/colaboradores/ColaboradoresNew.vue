@@ -102,6 +102,14 @@
             </b-form-select>
           </b-form-group>
         </b-col>
+        <b-col sm="7">
+          <b-form-group label="Cargo" label-for="cargo">
+            <b-form-input
+              v-model="dataForm.cargo"
+              placeholder="Cargo"
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
         <b-col sm="12" v-if="!this.$route.params.id">
           <b-form-checkbox v-model="dataForm.terminos" switch>
             Acepta terminos tratamiento de datos
@@ -149,6 +157,7 @@ export default {
         idemp: "",
         estado: 1,
         terminos: true,
+        cargo: "",
       },
     };
   },
@@ -237,6 +246,7 @@ export default {
             id: this.$route.params.id,
           };
           await this.editItem(this.dataForm);
+          this.$router.push(this.cancelUrl);
         } else {
           if (this.dataForm.terminos) {
             if (this.publicform) {
@@ -267,9 +277,9 @@ export default {
         this.dataForm = this.data;
       } else {
         this.dataForm = {
-          fechainicio: "",
-          fechafin: "",
-          horas: "",
+          nombres: "",
+          apellidos: "",
+          numerodocumento: "",
         };
       }
     },

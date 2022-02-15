@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div v-if="!loading">
       <b-alert show variant="success">
         <h4 class="alert-heading">
           Felicitaciones {{ dataItem.colaboradore.nombres_col }} !
@@ -18,25 +18,28 @@
           >
         </p>
       </b-alert>
+      <vue-html2pdf
+        :show-layout="false"
+        :float-layout="true"
+        :enable-download="false"
+        :preview-modal="true"
+        filename="certificacion"
+        @beforeDownload="beforeDownload($event)"
+        :pdf-quality="2"
+        :manual-pagination="true"
+        pdf-format="a4"
+        pdf-orientation="portrait"
+        ref="html2Pdf"
+      >
+        <section slot="pdf-content">
+          <CertColaboradoresTemplate
+            v-if="!loading"
+            :certificacion="dataItem"
+          />
+        </section>
+      </vue-html2pdf>
     </div>
-    <vue-html2pdf
-      :show-layout="false"
-      :float-layout="true"
-      :enable-download="false"
-      :preview-modal="true"
-      filename="certificacion"
-      :pdf-quality="2"
-      :manual-pagination="true"
-      pdf-format="a4"
-      pdf-orientation="portrait"
-      ref="html2Pdf"
-    >
-      <section slot="pdf-content">
-        <CertColaboradoresTemplate :certificacion="dataItem" />
-      </section>
-    </vue-html2pdf>
-
-    <CertColaboradoresTemplate :certificacion="dataItem" /> 
+    <CertColaboradoresTemplate v-if="!loading" :certificacion="dataItem" />
   </div>
 </template>
 <script>
@@ -45,7 +48,7 @@ import Loader from "@/components/Loader/Loader";
 import CertColaboradoresTemplate from "./CertColaboradoresTemplate.vue";
 import VueHtml2pdf from "vue-html2pdf";
 export default {
-  components: { Loader,  VueHtml2pdf, CertColaboradoresTemplate },
+  components: { Loader, VueHtml2pdf, CertColaboradoresTemplate },
   name: "CertCoalboradoresPdf",
   data() {
     return {};
@@ -57,6 +60,17 @@ export default {
     download() {
       this.$refs.html2Pdf.generatePdf();
     },
+    async beforeDownload({ html2pdf, options, pdfContent }) {
+      await html2pdf()
+        .set(options)
+        .from(pdfContent)
+        .outputPdf()
+        .then(function (pdf) {
+          const pdfbase64 = btoa(pdf);
+          console.log(pdfbase64);
+        })
+        .save();
+    },
   },
   computed: {
     ...mapState({
@@ -64,7 +78,7 @@ export default {
       loading: (state) => state.certcolaboradores.loading,
     }),
   },
-  async mounted() {
+  async created() {
     const id = this.$route.params.id;
     await this.getData(id);
   },

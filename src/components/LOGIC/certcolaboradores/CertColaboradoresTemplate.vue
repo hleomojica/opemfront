@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" v-if="!loading">
     <div class="cert-content">
       <div class="cert-id">
         <span>Certificado</span>
@@ -10,10 +10,11 @@
               certificacion.certificacione.cohorte_cer
                 .toString()
                 .padStart(4, "0")
-            }}/ {{ certificacion.consecutivo_ceco.toString().padStart(4, "0") }}
+            }}/ {{ certificacion.consecutivo.toString().padStart(4, "0") }}
           </span></span
         >
       </div>
+
       <div class="cert-details">
         <h3>{{ certificacion.colaboradore.nombres_col }}</h3>
         <h3>{{ certificacion.colaboradore.apellidos_col }}</h3>
@@ -39,8 +40,8 @@
               day: "numeric",
             })
           }}
-          <br>
-          (Vigencia {{certificacion.certificacione.tiempovigencia_cer}} año)
+          <br />
+          (Vigencia {{ certificacion.certificacione.tiempovigencia_cer }} año)
         </h5>
       </div>
       <div class="cert-sign">
@@ -64,7 +65,7 @@
 <script>
 import Loader from "@/components/Loader/Loader";
 import QrcodeVue from "qrcode.vue";
-
+import { mapState } from "vuex";
 export default {
   components: { Loader, QrcodeVue },
   name: "CertCoalboradoresTemplate",
@@ -80,8 +81,12 @@ export default {
     },
   },
   methods: {},
-  computed: {},
-  async mounted() {
+  computed: {
+    ...mapState({
+      loading: (state) => state.certcolaboradores.loading,
+    }),
+  },
+  created() {
     this.valueqr = `${this.valueqr}${this.certificacion.colaboradore.numerodocumento_col}`;
   },
 };

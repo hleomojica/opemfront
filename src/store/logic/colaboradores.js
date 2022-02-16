@@ -48,7 +48,7 @@ export default {
       state.dataColaborador = state.dataColaborador.filter(col => col.id_col !== payload)
     },
     clearColaborador(state) {
-      state.dataColaborador = null;
+      state.dataColaborador = [];
     }
   },
   getters: {

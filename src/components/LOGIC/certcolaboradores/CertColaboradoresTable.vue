@@ -76,6 +76,7 @@
     <b-table
       v-else
       striped
+      responsive
       hover
       light
       :items="dataTable.items"

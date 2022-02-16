@@ -25,7 +25,6 @@ export default {
             type: "success",
           });
         }
-        console.log(result)
         commit(`setStatusSend`, true);
       } catch (e) {
         commit(`setStatusSend`, false);

@@ -12,12 +12,24 @@
           ser mejores.
         </p>
         <hr />
-        <p class="mb-0">
-          <b-button pill variant="primary" @click="download"
-            >Descargar Certificado!</b-button
-          >
-        </p>
       </b-alert>
+      <br />
+      <b-container>
+        <b-row>
+          <b-col>
+            <b-button pill variant="primary" @click="download(true)"
+              >Descargar Certificado!</b-button
+            >
+          </b-col>
+          <b-col>
+            <b-button pill variant="success" @click="download(false)">
+              Enviar al correo
+              <b-icon icon="envelope"></b-icon>
+            </b-button>
+          </b-col>
+        </b-row>
+      </b-container>
+      <br />
       <vue-html2pdf
         :show-layout="false"
         :float-layout="true"
@@ -51,23 +63,42 @@ export default {
   components: { Loader, VueHtml2pdf, CertColaboradoresTemplate },
   name: "CertCoalboradoresPdf",
   data() {
-    return {};
+    return {
+      send: false,
+    };
   },
   methods: {
     ...mapActions({
       getData: "certcolaboradores/getDataById",
+      sendEmail: "email/sendEmail",
     }),
-    download() {
+    download(sending) {
+      this.send = sending;
       this.$refs.html2Pdf.generatePdf();
     },
     async beforeDownload({ html2pdf, options, pdfContent }) {
+      const that = this
+      const cert = this.dataItem;
+
       await html2pdf()
         .set(options)
         .from(pdfContent)
         .outputPdf()
-        .then(function (pdf) {
+        .then(async function(pdf) {
           const pdfbase64 = btoa(pdf);
-          console.log(pdfbase64);
+
+          if (!that.send) {
+            
+            const dataemail = {
+              tipo: 2,
+              to: cert.colaboradore.correopersonal_col,
+              username: "",
+              pass: "",
+              nombre: cert.nombres,
+              pdf: pdfbase64,
+            };   
+            await that.sendEmail(dataemail);
+          }
         })
         .save();
     },

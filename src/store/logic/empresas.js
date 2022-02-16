@@ -51,9 +51,9 @@ export default {
     async getDataList({
       commit
     }) {
-      try {   
-        const response = await axios.get(`/empresa/GetAll`);  
-        commit("getDataList", response.data); 
+      try {
+        const response = await axios.get(`/empresa/GetAll`);
+        commit("getDataList", response.data);
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
           type: "error",
@@ -128,7 +128,10 @@ export default {
         this._vm.$toasted.show("Empresa eliminada", {
           type: "success",
         });
-        dispatch("getData", { page: 0, size: 10 });
+        dispatch("getData", {
+          page: 0,
+          size: 10
+        });
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
           type: "error",

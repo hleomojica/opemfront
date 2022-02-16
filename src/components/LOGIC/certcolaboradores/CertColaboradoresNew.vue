@@ -53,7 +53,7 @@
               type="button"
               class="btn btn-success ml-2"
               @click="info($event.target)"
-              >Colaboradores
+              >Aprendices
               <b-icon icon="search" aria-hidden="true"></b-icon>
             </b-button>
             <b-table
@@ -80,7 +80,7 @@
           <b-col>
             <button type="submit" class="btn btn-primary">Guardar</button>
             <button
-              @click="resetData"
+              @click="clear"
               type="button"
               class="btn btn-light ml-2"
               v-if="!this.$route.params.id"
@@ -166,7 +166,12 @@ export default {
     }),
     cancelUrl() {
       return (
-        "/" + this.$route.fullPath.split("/").slice(1).splice(0, 2).join("/")
+        "/" +
+        this.$route.fullPath
+          .split("/")
+          .slice(1)
+          .splice(0, 2)
+          .join("/")
       );
     },
   },
@@ -217,7 +222,7 @@ export default {
           this.dataForm = {
             ...this.dataForm,
             id: this.$route.params.id,
-          };      
+          };
           await this.editItem(this.dataForm);
         } else {
           const dataCreate = [];
@@ -244,6 +249,17 @@ export default {
     },
     changeCurso() {
       this.getDataCert(this.dataForm.idcur);
+    },
+    clear() {
+      this.dataForm = {
+        idcur: "",
+        idcer: "",
+        idemp: "",
+        estado: 0,
+        nombres: "",
+        descargado: 0,
+      };
+      this.clearColaborador();
     },
     resetData() {
       if (this.dataForm) {

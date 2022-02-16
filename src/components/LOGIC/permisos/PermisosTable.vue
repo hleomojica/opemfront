@@ -19,7 +19,15 @@
 
     <div v-if="loading"><Loader /></div>
     <!-- tabla -->
-    <b-table v-else striped hover light :items="dataTable" :fields="fields">
+    <b-table
+      v-else
+      striped
+      hover
+      light
+      :items="dataTable"
+      responsive
+      :fields="fields"
+    >
       <template #cell(ver)="row">
         <b-form-checkbox
           unchecked-value="0"

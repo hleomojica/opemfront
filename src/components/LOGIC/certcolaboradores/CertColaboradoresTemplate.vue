@@ -24,6 +24,7 @@
         <span>Asistió y aprobó satisfactoriamente el curso</span>
         <h3>{{ certificacion.certificacione.curso.nombre_cur }}</h3>
       </div>
+      <div style="min-height: 100px;">{{ certificacion.certificacione.curso.descripcion_cur }}</div>
       <div class="cert-dates">
         <h5 class="intensity">
           Realizado con una intensidad de
@@ -45,18 +46,32 @@
         </h5>
       </div>
       <div class="cert-sign">
-        <img src="../../../assets/certificado/firma.png" class="img-sign" />
-        <h5>JUAN JOSÉ SOLANO MEZA</h5>
-        <h6>Director de Formación Empresarial</h6>
-        <span>
-          Emitido por
-          <span>OPTIMIZACIÓN EMPRESARIAL S.A.S</span>
-        </span>
-        <h5 class="license">Licencia en SST 00-10536</h5>
-        <span>Bucaramanga - Colombia</span>
-      </div>
-      <div class="cert-qr">
-        <qrcode-vue :value="valueqr" :size="sizeqr" level="H" />
+        <b-container style=" margin-left: -20px;">
+          <b-row>
+            <b-col lg="8">
+              <img
+                src="../../../assets/certificado/firma.png"
+                class="img-sign"
+              />
+              <h5>JUAN JOSÉ SOLANO MEZA</h5>
+              <h6>Director de Formación Empresarial</h6>
+              <span>
+                Emitido por
+                <span>OPTIMIZACIÓN EMPRESARIAL S.A.S</span>
+              </span>
+              <h5 class="license">Licencia en SST 00-10536</h5>
+              <span>Bucaramanga - Colombia</span>
+            </b-col>
+            <b-col lg="4">
+              <qrcode-vue
+                class="mt-5"
+                :value="valueqr"
+                :size="sizeqr"
+                level="H"
+              />
+            </b-col>
+          </b-row>
+        </b-container>
       </div>
     </div>
   </div>
@@ -92,4 +107,4 @@ export default {
 };
 </script>
 
-<style  src="./Certificado.scss" lang="scss"  />
+<style src="./Certificado.scss" lang="scss" />

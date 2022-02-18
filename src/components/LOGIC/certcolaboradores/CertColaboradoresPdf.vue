@@ -17,14 +17,24 @@
       <b-container>
         <b-row>
           <b-col>
-            <b-button pill variant="primary" @click="download(true)"
-              >Descargar Certificado!</b-button
-            >
+            <b-button pill variant="primary" @click="download(true)">
+              <span v-if="!loadingsend"> Desacargando ...</span>
+              <span v-else> Descargar Certificado!</span>
+              <b-spinner small v-if="!loadingsend"></b-spinner>
+              <b-icon v-else icon="download"></b-icon>
+            </b-button>
           </b-col>
           <b-col>
-            <b-button pill variant="success" @click="download(false)">
-              Enviar al correo
-              <b-icon icon="envelope"></b-icon>
+            <b-button
+              pill
+              :disabled="!loadingsend"
+              variant="success"
+              @click="download(false)"
+            >
+              <span v-if="!loadingsend"> Enviando ...</span>
+              <span v-else> Enviar al correo</span>
+              <b-spinner small v-if="!loadingsend"></b-spinner>
+              <b-icon v-else icon="envelope"></b-icon>
             </b-button>
           </b-col>
         </b-row>
@@ -35,7 +45,7 @@
         :float-layout="true"
         :enable-download="false"
         :preview-modal="true"
-        filename="certificacion"
+        :filename="certificacionname"
         @beforeDownload="beforeDownload($event)"
         :pdf-quality="2"
         :manual-pagination="true"
@@ -65,6 +75,8 @@ export default {
   data() {
     return {
       send: false,
+      certificacionname: "",
+      loadingsend: true,
     };
   },
   methods: {
@@ -73,11 +85,12 @@ export default {
       sendEmail: "email/sendEmail",
     }),
     download(sending) {
+      this.loadingsend = false;
       this.send = sending;
       this.$refs.html2Pdf.generatePdf();
     },
     async beforeDownload({ html2pdf, options, pdfContent }) {
-      const that = this
+      const that = this;
       const cert = this.dataItem;
 
       await html2pdf()
@@ -88,7 +101,6 @@ export default {
           const pdfbase64 = btoa(pdf);
 
           if (!that.send) {
-            
             const dataemail = {
               tipo: 2,
               to: cert.colaboradore.correopersonal_col,
@@ -96,11 +108,12 @@ export default {
               pass: "",
               nombre: cert.nombres,
               pdf: pdfbase64,
-            };   
+              filename: this.certificacionname,
+            };
             await that.sendEmail(dataemail);
           }
-        })
-        .save();
+        });
+      this.loadingsend = true;
     },
   },
   computed: {
@@ -112,6 +125,10 @@ export default {
   async created() {
     const id = this.$route.params.id;
     await this.getData(id);
+    this.certificacionname =
+      this.dataItem.certificacione.curso.iniciales_cur +
+      "_" +
+      this.dataItem.colaboradore.nombres_col;
   },
 };
 </script>

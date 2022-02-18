@@ -9,6 +9,8 @@ export default {
     modalOpen: false,
     dataForm: {},
     deleteId: null,
+    page: 1,
+    size: 10
   },
   //-- Will modify the state
   mutations: {
@@ -36,6 +38,9 @@ export default {
     setDeleteId(state, payload) {
       state.deleteId = payload;
     },
+    setPaging(state, payload) {
+      state.page = payload.page;     
+    }
   },
   getters: {
     getDataNow(state) {
@@ -49,11 +54,12 @@ export default {
       commit("setData", payload);
     },
     async getData({
-      commit
+      commit,
+      state
     }, payload) {
       try {
         commit("showLoader");
-        var param = `?page=${payload.page}&size=${payload.size}`
+        var param = `?page=${state.page}&size=${state.size}`
 
         if (payload.idcol) {
           param += `&idcol=${payload.idcol}`
@@ -119,12 +125,12 @@ export default {
           id: response.data.id_ceco,
           idcer: response.data.idcer_ceco || "",
           idcol: response.data.idcol_ceco || "",
-          idemp: response.data.idemp_ceco || "",    
-          idcur:response.data.certificacione.curso.id_cur || "",  
-          nombres: response.data.colaboradore.nombres_col+" "+response.data.colaboradore.apellidos_col || "",   
-          colaboradore:response.data.colaboradore,
-          consecutivo:response.data.consecutivo_ceco,
-          certificacione:response.data.certificacione,
+          idemp: response.data.idemp_ceco || "",
+          idcur: response.data.certificacione.curso.id_cur || "",
+          nombres: response.data.colaboradore.nombres_col + " " + response.data.colaboradore.apellidos_col || "",
+          colaboradore: response.data.colaboradore,
+          consecutivo: response.data.consecutivo_ceco,
+          certificacione: response.data.certificacione,
         }
         commit("setDataItem", newData);
         commit("hideLoader");
@@ -174,8 +180,8 @@ export default {
         this._vm.$toasted.show("Estado actualizado correctamente", {
           type: "success",
         });
-        
-        dispatch("getData", { page: 0, size: 10 });
+
+        dispatch("getData",{});
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
           type: "error",

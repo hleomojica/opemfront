@@ -24,7 +24,9 @@
         <span>Asistió y aprobó satisfactoriamente el curso</span>
         <h3>{{ certificacion.certificacione.curso.nombre_cur }}</h3>
       </div>
-      <div style="min-height: 100px;">{{ certificacion.certificacione.curso.descripcion_cur }}</div>
+      <div style="min-height: 100px;">
+        {{ certificacion.certificacione.curso.descripcion_cur }}
+      </div>
       <div class="cert-dates">
         <h5 class="intensity">
           Realizado con una intensidad de
@@ -42,13 +44,13 @@
             })
           }}
           <br />
-          (Vigencia {{ certificacion.certificacione.tiempovigencia_cer }} año)
         </h5>
+        (Vigencia {{ certificacion.certificacione.tiempovigencia_cer }} año)
       </div>
       <div class="cert-sign">
         <b-container style=" margin-left: -20px;">
           <b-row>
-            <b-col lg="8">
+            <b-col lg="9">
               <img
                 src="../../../assets/certificado/firma.png"
                 class="img-sign"
@@ -62,7 +64,7 @@
               <h5 class="license">Licencia en SST 00-10536</h5>
               <span>Bucaramanga - Colombia</span>
             </b-col>
-            <b-col lg="4">
+            <b-col lg="3">
               <qrcode-vue
                 class="mt-5"
                 :value="valueqr"

@@ -35,6 +35,7 @@
         v-else
         striped
         hover
+        responsive
         light
         :items="dataTable.items"
         :fields="fields"

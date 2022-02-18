@@ -133,8 +133,8 @@ export default {
       if (this.dataState) {
         this.dataForm = {
           id_cur: this.dataState.id_cur,
-          nombre: this.dataState.descripcion_cur,
-          descripcion: this.dataState.nombre_cur,
+          nombre: this.dataState.nombre_cur,
+          descripcion: this.dataState.descripcion_cur,
           iniciales: this.dataState.iniciales_cur,
         };
       } else {

@@ -44,7 +44,7 @@
         :show-layout="false"
         :float-layout="true"
         :enable-download="false"
-        :preview-modal="true"
+        :preview-modal="false"
         :filename="certificacionname"
         @beforeDownload="beforeDownload($event)"
         :pdf-quality="2"
@@ -97,7 +97,7 @@ export default {
         .set(options)
         .from(pdfContent)
         .outputPdf()
-        .then(async function(pdf) {
+        .then(async function (pdf) {
           const pdfbase64 = btoa(pdf);
 
           if (!that.send) {
@@ -112,7 +112,8 @@ export default {
             };
             await that.sendEmail(dataemail);
           }
-        });
+        })
+        .save();
       this.loadingsend = true;
     },
   },
@@ -128,7 +129,9 @@ export default {
     this.certificacionname =
       this.dataItem.certificacione.curso.iniciales_cur +
       "_" +
-      this.dataItem.colaboradore.nombres_col;
+      this.dataItem.colaboradore.nombres_col +
+      "_" +
+      this.dataItem.colaboradore.apellidos_col;
   },
 };
 </script>

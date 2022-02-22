@@ -36,7 +36,7 @@
           Fecha de expedición:
           {{
             new Date(
-              certificacion.certificacione.fechafin_cer
+              certificacion.certificacione.fechainicio_cer
             ).toLocaleDateString("es-CO", {
               year: "numeric",
               month: "long",

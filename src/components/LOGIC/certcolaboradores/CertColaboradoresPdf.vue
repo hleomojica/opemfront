@@ -6,12 +6,14 @@
           Felicitaciones {{ dataItem.colaboradore.nombres_col }} !
         </h4>
         <p>
-          Aprobo satisfactoriamente el curso de
-          {{ dataItem.certificacione.curso.nombre_cur }}, a continuacion esta la
-          vista previa del certificado, esperamos seguir trabajando juntos para
-          ser mejores.
+          Has culminado satisfactoriamente el curso de
+          <span style="text-transform: uppercase;">{{
+            dataItem.certificacione.curso.nombre_cur
+          }}</span
+          >. A continuacion puedes descargar tu certificado.
         </p>
         <hr />
+        Juntos, creamos valor...
       </b-alert>
       <br />
       <b-container>
@@ -97,7 +99,7 @@ export default {
         .set(options)
         .from(pdfContent)
         .outputPdf()
-        .then(async function (pdf) {
+        .then(async function(pdf) {
           const pdfbase64 = btoa(pdf);
 
           if (!that.send) {

@@ -1,4 +1,4 @@
- <template>
+<template>
   <div>
     <b-button-group class="mb-2">
       <b-button
@@ -12,7 +12,49 @@
       >
         <b-icon icon="plus-circle-fill"></b-icon> Nuevo
       </b-button>
+      <b-button
+        :class="visiblecol ? null : 'collapsed'"
+        :aria-expanded="visiblecol ? 'true' : 'false'"
+        aria-controls="colfilter"
+        @click="visiblecol = !visiblecol"
+        :variant="visiblecol ? 'primary' : 'outline-primary'"
+      >
+        <b-icon icon="search"></b-icon> Filtro
+      </b-button>
     </b-button-group>
+
+    <!-- filtros -->
+    <b-collapse id="colfilter" v-model="visiblecol">
+      <b-card border-variant="secundary">
+        <b-card-text>
+          <b-container fluid>
+            <b-row class="my-1">
+              <b-col md="6" sm="12" class="mt-2">
+                <b-form-select
+                  :options="dataCursos"
+                  value-field="id_cur"
+                  text-field="nombre_cur"
+                  v-model="idcur"
+                  @change="retrieveParams()"
+                >
+                  <b-form-select-option value=""
+                    >-Todos los Cursos-</b-form-select-option
+                  >
+                </b-form-select>
+              </b-col>
+              <b-col md="6" sm="12" class="mt-2">
+                <b-form-input
+                  id="cohorte"
+                  v-model="cohorte"
+                  placeholder="Cohorte"
+                  @keyup="retrieveParams()"
+                ></b-form-input>
+              </b-col>
+            </b-row>
+          </b-container>
+        </b-card-text>
+      </b-card>
+    </b-collapse>
 
     <div v-if="loading"><Loader /></div>
 
@@ -91,6 +133,9 @@ export default {
       page: 1,
       count: 0,
       perPage: 10,
+      visiblecol: false,
+      idcur: "",
+      cohorte: "",
     };
   },
   computed: {
@@ -98,6 +143,7 @@ export default {
       loading: (state) => state.certificaciones.loading,
       dataTable: (state) => state.certificaciones.dataTable,
       modalOpen: (state) => state.certificaciones.modalOpen,
+      dataCursos: (state) => state.cursos.dataTable,
     }),
     dataFormatter() {
       return dataFormatter;
@@ -157,11 +203,12 @@ export default {
       getFilteredData: "certificaciones/getFilteredData",
       deleteItem: "certificaciones/deleteItem",
       updateEstado: "certificaciones/editEstado",
+      getDataCursos: "cursos/getData",
     }),
     ...mapMutations({
       setDeleteId: "certificaciones/setDeleteId",
     }),
-    getRequestParams(page, perPage) {
+    getRequestParams(page, perPage, cohorte, idcur) {
       let params = {};
       if (page) {
         params["page"] = page - 1;
@@ -169,16 +216,29 @@ export default {
       if (perPage) {
         params["size"] = perPage;
       }
+      if (cohorte) {
+        params["cohorte"] = cohorte;
+      }
+      if (idcur) {
+        params["idcur"] = idcur;
+      }
       return params;
     },
-    async retrieveTutorials() {
-      const params = this.getRequestParams(1, this.perPage);
+    async retrieveParams() {
+      const params = this.getRequestParams(
+        this.page,
+        this.perPage,
+        this.cohorte,
+        this.idcur
+      );
       await this.getData(params);
+      this.page = this.dataTable.currentPage + 1;
+      this.count = this.dataTable.totalItems;
     },
-    handlePageChange(value) {
+    async handlePageChange(value) {
       this.page = value;
       this.size = 10;
-      this.retrieveTutorials();
+      await this.retrieveParams();
     },
     async changeEstado(row, estado) {
       const certifica = {
@@ -186,12 +246,13 @@ export default {
         id: row.item.id_cer,
       };
       await this.updateEstado(certifica);
-      this.retrieveTutorials();
+      this.retrieveParams();
     },
   },
   async beforeMount() {
     await this.getData({ page: 0, size: 10 });
-    this.page = this.dataTable.currenPage;
+    await this.getDataCursos();
+    this.page = this.dataTable.currentPage + 1;
     this.count = this.dataTable.totalItems;
   },
 };
@@ -214,4 +275,3 @@ export default {
   white-space: nowrap;
 }
 </style>
-

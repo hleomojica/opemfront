@@ -11,8 +11,8 @@
                 .toString()
                 .padStart(4, "0")
             }}/ {{ certificacion.consecutivo.toString().padStart(4, "0") }}
-          </span></span
-        >
+          </span>
+        </span>
       </div>
 
       <div class="cert-details">

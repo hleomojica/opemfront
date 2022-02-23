@@ -47,9 +47,18 @@ export default {
       commit
     }, payload) {
       try {
-        const pagin = `?page=${payload.page}&size=${payload.size}`
+
+        var param = `?page=${payload.page}&size=${payload.size}`
+
+        if (payload.idcur) {
+          param += `&idcur=${payload.idcur}`
+        }
+        if (payload.cohorte) {
+          param += `&cohorte=${payload.cohorte}`
+        }
+
         commit("showLoader");
-        const response = await axios.get(`/certificaciones${pagin}`);
+        const response = await axios.get(`/certificaciones${param}`);
         commit("setData", response.data);
         commit("hideLoader");
       } catch (e) {
@@ -63,7 +72,7 @@ export default {
     }, payload) {
       try {
         commit("showLoader");
-        const response = await axios.get(`/certificaciones/getByCurso?idcur=${payload}`);
+        const response = await axios.get(`/certificaciones/getByCurso?idcur=${payload}&estado=0`);
         commit("setData", response.data);
         commit("hideLoader");
       } catch (e) {
@@ -88,7 +97,7 @@ export default {
           type: "error",
         });
       }
-    }, 
+    },
     async getDataForm({
       commit
     }, payload) {
@@ -131,14 +140,16 @@ export default {
         });
       }
     },
-    async editEstado({commit}, payload) {
+    async editEstado({
+      commit
+    }, payload) {
       const id = payload.id
       try {
         console.log(commit)
         await axios.put(`/certificaciones/updateEstado/${id}`, payload);
         this._vm.$toasted.show("Registro actualizado", {
           type: "success",
-        });        
+        });
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
           type: "error",

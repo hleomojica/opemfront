@@ -274,18 +274,12 @@ export default {
         this.cohorte
       );
       await this.getData(params);
-
-      this.paging = this.page;
       this.count = this.dataTable.totalItems;
-
-      this.setPaging({
-        page: this.dataTable.currentPage,
-      });
+      this.paging = this.dataTable.currentPage + 1;
+      this.setPaging({ page: this.paging });
     },
     async handlePageChange(value) {
-      this.setPaging({
-        page: value,
-      });
+      this.setPaging({ page: value });
       await this.retrieveParam();
     },
     async changeEstado(row, check) {
@@ -299,21 +293,17 @@ export default {
       this.showover = true;
       for (var i = 0; i < this.dataTable.items.length; i++) {
         var item = this.dataTable.items[i];
-        
+
         await this.changeEstado({ item: item }, 1);
       }
       this.showover = false;
     },
-    filter() {
-      this.setPaging({
-        page: 0,
-      });
-      this.retrieveParam();
+    async filter() {
+      await this.retrieveParam();
     },
   },
 
   async beforeMount() {
-    this.paging = this.page;
     this.permisos = this.currentaction;
     if (this.permisos.filtrar_prol == 0) {
       this.idcol = this.currentuser.id_col;

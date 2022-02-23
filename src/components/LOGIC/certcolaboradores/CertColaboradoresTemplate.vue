@@ -11,8 +11,8 @@
                 .toString()
                 .padStart(4, "0")
             }}/ {{ certificacion.consecutivo.toString().padStart(4, "0") }}
-          </span></span
-        >
+          </span>
+        </span>
       </div>
 
       <div class="cert-details">
@@ -36,7 +36,7 @@
           Fecha de expedición:
           {{
             new Date(
-              certificacion.certificacione.fechafin_cer
+              certificacion.certificacione.fechainicio_cer
             ).toLocaleDateString("es-CO", {
               year: "numeric",
               month: "long",

@@ -6,12 +6,14 @@
           Felicitaciones {{ dataItem.colaboradore.nombres_col }} !
         </h4>
         <p>
-          Aprobo satisfactoriamente el curso de
-          {{ dataItem.certificacione.curso.nombre_cur }}, a continuacion esta la
-          vista previa del certificado, esperamos seguir trabajando juntos para
-          ser mejores.
+          Has culminado satisfactoriamente el curso de
+          <span style="text-transform: uppercase;">{{
+            dataItem.certificacione.curso.nombre_cur
+          }}</span
+          >. A continuacion puedes descargar tu certificado.
         </p>
         <hr />
+        Juntos, creamos valor...
       </b-alert>
       <br />
       <b-container>
@@ -44,7 +46,7 @@
         :show-layout="false"
         :float-layout="true"
         :enable-download="false"
-        :preview-modal="true"
+        :preview-modal="false"
         :filename="certificacionname"
         @beforeDownload="beforeDownload($event)"
         :pdf-quality="2"
@@ -112,7 +114,8 @@ export default {
             };
             await that.sendEmail(dataemail);
           }
-        });
+        })
+        .save();
       this.loadingsend = true;
     },
   },
@@ -128,7 +131,9 @@ export default {
     this.certificacionname =
       this.dataItem.certificacione.curso.iniciales_cur +
       "_" +
-      this.dataItem.colaboradore.nombres_col;
+      this.dataItem.colaboradore.nombres_col +
+      "_" +
+      this.dataItem.colaboradore.apellidos_col;
   },
 };
 </script>

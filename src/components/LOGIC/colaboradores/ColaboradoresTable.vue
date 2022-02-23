@@ -302,7 +302,7 @@ export default {
         this.cedula
       );
       await this.getData(params);
-      this.page = this.dataTable.currenPage;
+      this.page = this.dataTable.currentPage;
       this.count = this.dataTable.totalItems;
     },
     existCuentAcceso(row) {
@@ -347,7 +347,7 @@ export default {
   async beforeMount() {
     await this.getData({ page: 0, size: 10 });
     await this.getDataEmpresa();
-    this.page = this.dataTable.currenPage;
+    this.page = this.dataTable.currentPage;
     this.count = this.dataTable.totalItems;
     if (this.origen !== "colaboradores") {
       this.fields = this.fields.filter(

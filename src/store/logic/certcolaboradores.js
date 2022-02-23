@@ -39,7 +39,7 @@ export default {
       state.deleteId = payload;
     },
     setPaging(state, payload) {
-      state.page = payload.page;     
+      state.page = payload.page;
     }
   },
   getters: {
@@ -59,7 +59,8 @@ export default {
     }, payload) {
       try {
         commit("showLoader");
-        var param = `?page=${state.page}&size=${state.size}`
+
+        var param = `?page=${parseInt(state.page)-1}&size=${state.size}`
 
         if (payload.idcol) {
           param += `&idcol=${payload.idcol}`
@@ -181,7 +182,7 @@ export default {
           type: "success",
         });
 
-        dispatch("getData",{});
+        dispatch("getData", {});
       } catch (e) {
         this._vm.$toasted.show("Error: " + e, {
           type: "error",

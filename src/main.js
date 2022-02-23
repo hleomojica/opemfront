@@ -81,3 +81,12 @@ new Vue({
   router,
   render: h => h(App),
 });
+
+/*
+go -> cd /var/www/app...  
+rm -rf public_html  -- >  delete public_html  
+git pull --> changes 
+npm i 
+export NODE_OPTIONS=--max_old_space_size=1896
+npm run build
+*/

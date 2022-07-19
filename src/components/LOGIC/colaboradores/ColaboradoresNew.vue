@@ -52,7 +52,6 @@
             <b-form-input
               v-model="dataForm.apellidos"
               placeholder="Apellidos"
-              :state="validateState('apellidos')"
             ></b-form-input>
           </b-form-group>
         </b-col>
@@ -62,6 +61,7 @@
               id="fechanacimiento"
               v-model="dataForm.fechanacimiento"
               class="mb-2"
+              :state="validateState('fechanacimiento')"
             ></b-form-datepicker>
           </b-form-group>
         </b-col>
@@ -98,6 +98,7 @@
               :options="dataEmpresa"
               value-field="id_emp"
               text-field="nombre_emp"
+              :state="validateState('idemp')"
             >
             </b-form-select>
           </b-form-group>
@@ -189,14 +190,16 @@ export default {
         required,
         minLength: minLength(6),
       },
-      apellidos: {
-        required,
-        minLength: minLength(6),
-      },
       telefono: {
         required,
         minLength: minLength(10),
         maxLength: maxLength(10),
+      },
+      idemp: {
+        required,
+      },
+      fechanacimiento: {
+        required,
       },
     },
   },

@@ -34,10 +34,12 @@
         </h5>
         <h5 class="dat">
           Fecha de expedición:
+         
           {{
             new Date(
               certificacion.certificacione.fechainicio_cer
             ).toLocaleDateString("es-CO", {
+              timeZone: 'UTC',
               year: "numeric",
               month: "long",
               day: "numeric",
